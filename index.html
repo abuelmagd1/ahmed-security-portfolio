@@ -147,7 +147,6 @@
       </div>
       <button id="btnEnter" class="px-5 py-2.5 border border-green/50 text-green hover:bg-green hover:text-bg1 transition-colors tracking-wider">[ ENTER ]</button>
     </div>
-    <button id="btnSkip" class="mt-8 text-xs text-txt3 hover:text-txt2 underline underline-offset-4">SKIP INTRO</button>
   </div>
 </div>
 
@@ -608,7 +607,6 @@ const DATA = {
   const bootLinesEl = document.getElementById('bootLines');
   const bootEnter = document.getElementById('bootEnter');
   const btnEnter = document.getElementById('btnEnter');
-  const btnSkip = document.getElementById('btnSkip');
 
   function closeBoot(){
     bootOverlay.style.opacity = '0';
@@ -637,7 +635,6 @@ const DATA = {
     setTimeout(()=>{ if(!bootEnter.classList.contains('flex')){ clearInterval(iv); bootEnter.classList.remove('hidden'); bootEnter.classList.add('flex'); } }, 1600);
   }
   btnEnter && btnEnter.addEventListener('click', closeBoot);
-  btnSkip && btnSkip.addEventListener('click', closeBoot);
 
   /* ---------- Nav scroll compact + mobile menu ---------- */
   const nav = document.getElementById('siteNav');
