@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Ahmed Abuelmagd | Cybersecurity Portfolio</title>
+<meta name="description" content="Ahmed Abuelmagd — Computer Science student and cybersecurity trainee focused on network security, vulnerability assessment, web security and penetration testing." />
+<meta name="robots" content="index, follow" />
+
+<meta property="og:title" content="Ahmed Abuelmagd | Cybersecurity Portfolio" />
+<meta property="og:description" content="Computer Science student and cybersecurity trainee focused on network security, vulnerability assessment, web security and penetration testing." />
+<meta property="og:type" content="website" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content="Ahmed Abuelmagd | Cybersecurity Portfolio" />
+<meta name="twitter:description" content="Computer Science student and cybersecurity trainee focused on network security, vulnerability assessment, web security and penetration testing." />
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg1: '#050606', bg2: '#080A0A', bg3: '#0C0F0F',
+          green: { DEFAULT: '#00FF88', alt: '#00E676', bright: '#39FF88' },
+          char1: '#111515', char2: '#171B1B', char3: '#202525',
+          txt1: '#F5F7F7', txt2: '#A7B0B0', txt3: '#6F7979',
+          cyan: '#00D9FF'
+        },
+        fontFamily: {
+          sans: ['Inter','ui-sans-serif','system-ui'],
+          mono: ['"JetBrains Mono"','ui-monospace','monospace']
+        }
+      }
+    }
+  }
+</script>
+
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top: env(safe-area-inset-top,0px);
+    padding-bottom: env(safe-area-inset-bottom,0px);
+    --scan-color: rgba(0,255,136,0.55);
+  }
+  html{ scroll-padding-top: 88px; scroll-behavior:smooth; }
+  *,*::before,*::after{ box-sizing:inherit; }
+  html,body{ height:100%; }
+  body{
+    background:#050606; color:#F5F7F7; font-family:'Inter',ui-sans-serif,system-ui;
+    -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  ::selection{ background:#00FF88; color:#050606; }
+  .font-mono-tech{ font-family:'JetBrains Mono',ui-monospace,monospace; }
+
+  /* scrollbar */
+  ::-webkit-scrollbar{ width:10px; height:10px; }
+  ::-webkit-scrollbar-track{ background:#080A0A; }
+  ::-webkit-scrollbar-thumb{ background:#202525; border-radius:6px; border:2px solid #080A0A; }
+  ::-webkit-scrollbar-thumb:hover{ background:#00FF88; }
+
+  /* focus states */
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible{
+    outline:2px solid #00FF88; outline-offset:2px; border-radius:2px;
+  }
+
+  /* grid backdrop */
+  .grid-backdrop{
+    background-image:
+      linear-gradient(rgba(0,255,136,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,255,136,0.05) 1px, transparent 1px);
+    background-size: 42px 42px;
+    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, #000 40%, transparent 100%);
+            mask-image: radial-gradient(ellipse 80% 60% at 50% 20%, #000 40%, transparent 100%);
+  }
+
+  .noise-overlay{
+    pointer-events:none;
+    position:fixed; inset:0; z-index:60; opacity:.025; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .scanline{
+    position:absolute; left:0; right:0; height:2px;
+    background:linear-gradient(90deg, transparent, var(--scan-color), transparent);
+    filter: blur(0.5px);
+  }
+
+  .glow-text{ text-shadow: 0 0 18px rgba(0,255,136,0.45); }
+  .glow-border{ box-shadow: 0 0 0 1px rgba(0,255,136,0.15), 0 0 24px -8px rgba(0,255,136,0.35); }
+  .card{
+    background: linear-gradient(180deg, #0C0F0F, #0A0D0D);
+    border:1px solid #171B1B;
+    transition: border-color .25s ease, box-shadow .25s ease, transform .25s ease;
+  }
+  .card:hover{ border-color:#00FF8855; box-shadow:0 0 0 1px rgba(0,255,136,0.12), 0 18px 40px -22px rgba(0,255,136,0.35); transform:translateY(-2px); }
+
+  .status-dot{ box-shadow:0 0 8px 2px rgba(0,255,136,0.7); }
+
+  .blink-cursor{ display:inline-block; width:.55ch; background:#00FF88; animation:blink 1s steps(1) infinite; }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  .fade-up{ opacity:0; transform:translateY(18px); transition:opacity .6s ease, transform .6s ease; }
+  .fade-up.in{ opacity:1; transform:translateY(0); }
+
+  .terminal-panel{ transition: transform .35s cubic-bezier(.16,.84,.44,1), opacity .3s ease; }
+
+  #bootOverlay{ transition: opacity .5s ease; }
+
+  .node-pulse{ animation: pulseNode 2.6s ease-in-out infinite; }
+  @keyframes pulseNode{ 0%,100%{ opacity:.55; } 50%{ opacity:1; } }
+
+  .link-line{ stroke-dasharray: 4 6; animation: dashMove 3.2s linear infinite; }
+  @keyframes dashMove{ to{ stroke-dashoffset:-100; } }
+
+  .nav-shell{ transition: padding .3s ease, background-color .3s ease, box-shadow .3s ease; }
+
+  textarea, input{ background:#0C0F0F; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; scroll-behavior:auto !important; }
+  }
+
+  @media (max-width: 640px){
+    html{ scroll-padding-top: 72px; }
+  }
+</style>
+</head>
+<body class="bg-bg1 text-txt1 antialiased">
+
+<div class="noise-overlay"></div>
+
+<!-- ================= BOOT SEQUENCE ================= -->
+<div id="bootOverlay" class="fixed inset-0 z-[100] bg-bg1 flex items-center justify-center px-6">
+  <div class="w-full max-w-lg font-mono-tech text-sm text-txt2">
+    <p class="text-green mb-4 tracking-wide">INITIALIZING SECURITY ENVIRONMENT</p>
+    <ul id="bootLines" class="space-y-1.5"></ul>
+    <div id="bootEnter" class="mt-6 hidden items-center justify-between gap-4 flex-wrap">
+      <div class="text-txt2">
+        <div>SESSION INITIALIZED</div>
+        <div>IDENTITY: <span class="text-txt1">AHMED ABUELMAGD</span></div>
+        <div>ACCESS LEVEL: <span class="text-green">PORTFOLIO</span></div>
+      </div>
+      <button id="btnEnter" class="px-5 py-2.5 border border-green/50 text-green hover:bg-green hover:text-bg1 transition-colors tracking-wider">[ ENTER ]</button>
+    </div>
+    <button id="btnSkip" class="mt-8 text-xs text-txt3 hover:text-txt2 underline underline-offset-4">SKIP INTRO</button>
+  </div>
+</div>
+
+<!-- ================= NAV ================= -->
+<header id="siteNav" class="nav-shell fixed top-0 inset-x-0 z-40 border-b border-char2/70 bg-bg1/80 backdrop-blur-md">
+  <div class="max-w-7xl mx-auto px-5 sm:px-8 h-16 flex items-center justify-between">
+    <a href="#home" class="font-mono-tech text-sm sm:text-base tracking-wider text-txt1">AHMED <span class="text-green">/</span> SECURITY</a>
+
+    <nav class="hidden lg:flex items-center gap-7 font-mono-tech text-xs tracking-wide text-txt2">
+      <a href="#profile" class="hover:text-green transition-colors">PROFILE</a>
+      <a href="#arsenal" class="hover:text-green transition-colors">ARSENAL</a>
+      <a href="#projects" class="hover:text-green transition-colors">PROJECTS</a>
+      <a href="#writeups" class="hover:text-green transition-colors">WRITE-UPS</a>
+      <a href="#certifications" class="hover:text-green transition-colors">TRAINING</a>
+      <a href="#contact" class="hover:text-green transition-colors">CONTACT</a>
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <button id="btnPalette" class="hidden sm:flex items-center gap-2 font-mono-tech text-[11px] text-txt3 border border-char3 px-2.5 py-1.5 hover:border-green/50 hover:text-txt2 transition-colors" aria-label="Open command palette">
+        <span>⌘K</span>
+      </button>
+      <div class="hidden sm:flex items-center gap-1.5 font-mono-tech text-[11px] text-txt2">
+        <span class="w-1.5 h-1.5 rounded-full bg-green status-dot"></span> SYSTEM ONLINE
+      </div>
+      <button id="btnMenu" class="lg:hidden text-txt1 p-2" aria-label="Toggle menu" aria-expanded="false">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobileMenu" class="lg:hidden hidden border-t border-char2 bg-bg1">
+    <nav class="flex flex-col font-mono-tech text-sm text-txt2 px-5 py-4 gap-3">
+      <a href="#profile" class="mobile-link py-1">PROFILE</a>
+      <a href="#attack-surface" class="mobile-link py-1">ATTACK SURFACE</a>
+      <a href="#arsenal" class="mobile-link py-1">ARSENAL</a>
+      <a href="#methodology" class="mobile-link py-1">METHODOLOGY</a>
+      <a href="#projects" class="mobile-link py-1">PROJECTS</a>
+      <a href="#writeups" class="mobile-link py-1">WRITE-UPS</a>
+      <a href="#timeline" class="mobile-link py-1">JOURNEY</a>
+      <a href="#certifications" class="mobile-link py-1">TRAINING</a>
+      <a href="#contact" class="mobile-link py-1">CONTACT</a>
+    </nav>
+  </div>
+</header>
+
+<main id="home">
+
+<!-- ================= HERO ================= -->
+<section class="relative pt-32 pb-20 sm:pt-40 sm:pb-28 px-5 sm:px-8 overflow-hidden">
+  <div class="absolute inset-0 grid-backdrop"></div>
+  <div class="max-w-7xl mx-auto relative grid lg:grid-cols-2 gap-14 items-center">
+    <div class="fade-up">
+      <p id="heroRole" class="font-mono-tech text-xs tracking-[0.2em] text-green mb-5">CYBERSECURITY STUDENT &amp; SECURITY TRAINEE</p>
+      <div class="flex items-center gap-4 sm:gap-5">
+        <div id="heroAvatarRing" class="shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-full border-2 border-green/60 shadow-[0_0_24px_-4px_rgba(0,255,136,0.6)] overflow-hidden bg-char1 flex items-center justify-center">
+          <span id="heroAvatarInitial" class="text-xl sm:text-2xl font-bold text-green font-mono-tech">A</span>
+          <img id="heroAvatarImg" src="" alt="Profile photo" class="hidden w-full h-full object-cover" />
+        </div>
+        <h1 id="heroName" class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-[1.08] tracking-tight text-txt1">
+          AHMED ABUELMAGD
+        </h1>
+      </div>
+      <div class="mt-6 space-y-1 text-2xl sm:text-3xl font-semibold text-txt1 leading-tight">
+        <p>Understand the system.</p>
+        <p>Find the <span class="text-green glow-text">weakness</span>.</p>
+        <p>Secure the surface.</p>
+      </div>
+      <p class="mt-6 text-txt2 max-w-md leading-relaxed">
+        Computer Science student building practical skills across network security, web security, vulnerability assessment and penetration testing — through labs, structured training and hands-on practice.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-2 font-mono-tech text-[11px] text-txt2">
+        <span class="border border-char3 px-2.5 py-1">CYBERSECURITY</span>
+        <span class="border border-char3 px-2.5 py-1">NETWORK SECURITY</span>
+        <span class="border border-char3 px-2.5 py-1">WEB SECURITY</span>
+        <span class="border border-char3 px-2.5 py-1">VULNERABILITY ASSESSMENT</span>
+        <span class="border border-char3 px-2.5 py-1">PENETRATION TESTING</span>
+      </div>
+      <div class="mt-9 flex flex-wrap gap-4">
+        <a href="#projects" class="px-5 py-3 bg-green text-bg1 font-mono-tech text-xs tracking-wide font-semibold hover:bg-green-bright transition-colors">[ EXPLORE SECURITY WORK ]</a>
+        <a href="#profile" class="px-5 py-3 border border-char3 text-txt1 font-mono-tech text-xs tracking-wide hover:border-green/60 hover:text-green transition-colors">[ VIEW PROFILE ]</a>
+      </div>
+      <p class="mt-4 font-mono-tech text-[10px] text-txt3">This page reflects a design direction — not a claim of professional offensive-security experience.</p>
+    </div>
+
+    <!-- network visualization -->
+    <div class="fade-up relative">
+      <div class="relative border border-char2 bg-bg2/60 glow-border p-4 sm:p-6">
+        <div class="flex items-center justify-between mb-3 font-mono-tech text-[10px] text-txt3 tracking-wide">
+          <span>NETWORK TOPOLOGY — DEMO DATA</span>
+          <span class="text-green">● LIVE SCAN</span>
+        </div>
+        <div class="relative overflow-hidden">
+          <svg id="netSvg" viewBox="0 0 480 360" class="w-full h-auto select-none">
+            <g id="netLines" stroke="#00FF8850" stroke-width="1"></g>
+            <g id="netNodes" font-family="JetBrains Mono" font-size="9"></g>
+          </svg>
+          <div class="scanline" id="netScan" style="top:0"></div>
+        </div>
+        <div id="nodeInfo" class="mt-4 font-mono-tech text-[11px] text-txt2 border-t border-char2 pt-3 leading-relaxed">
+          <span class="text-txt3">Hover a node to inspect it.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SECURITY PROFILE ================= -->
+<section id="profile" class="px-5 sm:px-8 py-20 border-t border-char2">
+  <div class="max-w-7xl mx-auto">
+    <div class="fade-up mb-10">
+      <p class="font-mono-tech text-xs text-green tracking-[0.2em] mb-2">01 // ASSESSMENT</p>
+      <h2 class="text-3xl sm:text-4xl font-bold">Security Profile</h2>
+    </div>
+    <div class="fade-up grid md:grid-cols-2 gap-px bg-char2 border border-char2">
+      <div class="bg-bg2 p-6 sm:p-8">
+        <dl class="space-y-5 font-mono-tech text-sm">
+          <div><dt class="text-txt3 text-[11px] tracking-wide">IDENTITY</dt><dd id="profIdentity" class="text-txt1 text-base mt-1">Ahmed Abuelmagd</dd></div>
+          <div><dt class="text-txt3 text-[11px] tracking-wide">FOCUS</dt><dd id="profFocus" class="text-txt1 mt-1">Cybersecurity / Offensive Security</dd></div>
+          <div><dt class="text-txt3 text-[11px] tracking-wide">EDUCATION</dt><dd id="profEducation" class="text-txt1 mt-1">Computer Science — Damanhour University</dd></div>
+          <div><dt class="text-txt3 text-[11px] tracking-wide">CURRENT STAGE</dt><dd class="text-green mt-1">Learning + Hands-on Practice</dd></div>
+        </dl>
+      </div>
+      <div class="bg-bg2 p-6 sm:p-8">
+        <p class="font-mono-tech text-[11px] text-txt3 tracking-wide mb-3">PRIMARY AREAS</p>
+        <ul class="space-y-2 text-sm text-txt1">
+          <li class="flex items-center gap-2"><span class="w-1 h-1 bg-green"></span>Network Security</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 bg-green"></span>Web Security</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 bg-green"></span>Vulnerability Assessment</li>
+          <li class="flex items-center gap-2"><span class="w-1 h-1 bg-green"></span>Penetration Testing</li>
+        </ul>
+        <p class="font-mono-tech text-[11px] text-txt3 tracking-wide mt-6 mb-2">CURRENT OBJECTIVE</p>
+        <p class="text-txt2 text-sm leading-relaxed">Building practical skills toward penetration testing and offensive security through structured training and authorized lab work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ATTACK SURFACE ================= -->
+<section id="attack-surface" class="px-5 sm:px-8 py-20 border-t border-char2 relative overflow-hidden">
+  <div class="max-w-7xl mx-auto">
+    <div class="fade-up mb-12">
+      <p class="font-mono-tech text-xs text-green tracking-[0.2em] mb-2">02 // MAP</p>
+      <h2 class="text-3xl sm:text-4xl font-bold">Attack Surface</h2>
+      <p class="text-txt2 mt-2 max-w-xl">The areas of security I actively study and practice. Select a category to see what's inside it.</p>
+    </div>
+
+    <div class="fade-up grid lg:grid-cols-[1.1fr_1fr] gap-10 items-start">
+      <div class="relative border border-char2 bg-bg2/60 p-4 sm:p-8">
+        <svg id="surfaceSvg" viewBox="0 0 600 420" class="w-full h-auto">
+          <g id="surfaceLines" stroke="#202525" stroke-width="1.4"></g>
+          <g id="surfaceNodes" font-family="JetBrains Mono" font-size="11"></g>
+        </svg>
+      </div>
+      <div id="surfaceDetail" class="border border-char2 bg-bg2/60 p-6 min-h-[260px] font-mono-tech text-sm text-txt2">
+        <p class="text-txt3">Select a node on the map to inspect its concepts, tools and labs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ARSENAL ================= -->
+<section id="arsenal" class="px-5 sm:px-8 py-20 border-t border-char2">
+  <div class="max-w-7xl mx-auto">
+    <div class="fade-up mb-10">
+      <p class="font-mono-tech text-xs text-green tracking-[0.2em] mb-2">03 // TOOLING</p>
+      <h2 class="text-3xl sm:text-4xl font-bold">Security Arsenal</h2>
+      <p class="text-txt2 mt-2 max-w-xl">Tools organized by purpose, with an honest label for where I currently stand with each.</p>
+    </div>
+    <div id="arsenalGrid" class="fade-up grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </div>
+</section>
+
+<!-- ================= METHODOLOGY ================= -->
+<section id="methodology" class="px-5 sm:px-8 py-20 border-t border-char2 bg-bg2/40">
+  <div class="max-w-5xl mx-auto">
+    <div class="fade-up mb-12">
+      <p class="font-mono-tech text-xs text-green tracking-[0.2em] mb-2">04 // PROCESS</p>
+      <h2 class="text-3xl sm:text-4xl font-bold">How I Approach a Security Problem</h2>
+      <p class="text-txt2 mt-2 max-w-xl">Cybersecurity is a process, not just running tools. Every assessment follows the same authorized, methodical workflow.</p>
+    </div>
+    <ol id="methodList" class="fade-up space-y-0"></ol>
+  </div>
+</section>
+
+<!-- ================= PROOF OF WORK ================= -->
+<section id="projects" class="px-5 sm:px-8 py-20 border-t border-char2">
+  <div class="max-w-7xl mx-auto">
+    <div class="fade-up mb-10 flex flex-wrap items-end justify-between gap-4">
+      <div>
+        <p class="font-mono-tech text-xs text-green tracking-[0.2em] mb-2">05 // EVIDENCE</p>
+        <h2 class="text-3xl sm:text-4xl font-bold">Proof of Work</h2>
+        <p class="text-txt2 mt-2 max-w-xl">Labs and projects, organized by category. Case-study slots are ready — content will be added as work is completed.</p>
+      </div>
+      <div id="projectFilters" class="flex flex-wrap gap-2 font-mono-tech text-[10px]"></div>
+    </div>
+    <div id="projectsGrid" class="fade-up grid sm:grid-cols-2 lg:grid-cols-3 gap-5"></div>
+  </div>
+</section>
+
+<!-- ================= WRITE-UPS ================= -->
+<section id="writeups" class="px-5 sm:px-8 py-20 border-t border-char2 bg-bg2/40">
+  <div class="max-w-7xl mx-auto">
+    <div class="fade-up mb-10">
+      <p class="font-mono-tech text-xs text-green tracking-[0.2em] mb-2">06 // DOCUMENTATION</p>
+      <h2 class="text-3xl sm:text-4xl font-bold">Security Research / Write-ups</h2>
+    </div>
+    <div id="writeupsList" class="fade-up divide-y divide-char2 border-t border-b border-char2"></div>
+  </div>
+</section>
+
+<!-- ================= TIMELINE ================= -->
+<section id="timeline" class="px-5 sm:px-8 py-20 border-t border-char2">
+  <div class="max-w-3xl mx-auto">
+    <div class="fade-up mb-12">
+      <p class="font-mono-tech text-xs text-green tracking-[0.2em] mb-2">07 // TIMELINE</p>
+      <h2 class="text-3xl sm:text-4xl font-bold">Learning Journey</h2>
+    </div>
+    <ol id="journeyList" class="fade-up relative border-l border-char3 ml-2"></ol>
+  </div>
+</section>
+
+<!-- ================= CERTIFICATIONS ================= -->
+<section id="certifications" class="px-5 sm:px-8 py-20 border-t border-char2 bg-bg2/40">
+  <div class="max-w-7xl mx-auto">
+    <div class="fade-up mb-10">
+      <p class="font-mono-tech text-xs text-green tracking-[0.2em] mb-2">08 // TRAINING</p>
+      <h2 class="text-3xl sm:text-4xl font-bold">Certifications / Training</h2>
+    </div>
+    <div id="certGrid" class="fade-up grid sm:grid-cols-2 gap-4"></div>
+  </div>
+</section>
+
+<!-- ================= TECHNICAL WORK / GITHUB ================= -->
+<section id="technical-work" class="px-5 sm:px-8 py-20 border-t border-char2">
+  <div class="max-w-7xl mx-auto">
+    <div class="fade-up mb-8">
+      <p class="font-mono-tech text-xs text-green tracking-[0.2em] mb-2">09 // REPOSITORY</p>
+      <h2 class="text-3xl sm:text-4xl font-bold">Technical Work</h2>
+    </div>
+    <div id="githubPanel" class="fade-up border border-char2 bg-bg2/60 p-8 font-mono-tech text-sm text-txt2"></div>
+  </div>
+</section>
+
+<!-- ================= CONTACT ================= -->
+<section id="contact" class="px-5 sm:px-8 py-24 border-t border-char2 bg-bg2/40">
+  <div class="max-w-3xl mx-auto">
+    <div class="fade-up mb-10">
+      <p class="font-mono-tech text-xs text-green tracking-[0.2em] mb-2">10 // CONTACT</p>
+      <h2 class="text-3xl sm:text-4xl font-bold">Establish Connection</h2>
+    </div>
+    <form id="contactForm" class="fade-up space-y-5">
+      <div class="grid sm:grid-cols-2 gap-5">
+        <div>
+          <label for="cName" class="font-mono-tech text-[11px] text-txt3 tracking-wide">NAME</label>
+          <input id="cName" name="name" type="text" required class="mt-1.5 w-full border border-char3 px-3.5 py-2.5 text-sm text-txt1 focus:border-green/60 outline-none transition-colors" />
+        </div>
+        <div>
+          <label for="cEmail" class="font-mono-tech text-[11px] text-txt3 tracking-wide">EMAIL</label>
+          <input id="cEmail" name="email" type="email" required class="mt-1.5 w-full border border-char3 px-3.5 py-2.5 text-sm text-txt1 focus:border-green/60 outline-none transition-colors" />
+        </div>
+      </div>
+      <div>
+        <label for="cMsg" class="font-mono-tech text-[11px] text-txt3 tracking-wide">MESSAGE</label>
+        <textarea id="cMsg" name="message" rows="5" required class="mt-1.5 w-full border border-char3 px-3.5 py-2.5 text-sm text-txt1 focus:border-green/60 outline-none transition-colors resize-none"></textarea>
+      </div>
+      <button type="submit" class="px-6 py-3 bg-green text-bg1 font-mono-tech text-xs tracking-wide font-semibold hover:bg-green-bright transition-colors">SEND MESSAGE</button>
+      <p id="contactNote" class="font-mono-tech text-[11px] text-txt3"></p>
+    </form>
+
+    <div id="socialRow" class="fade-up mt-10 flex flex-wrap gap-3 font-mono-tech text-xs"></div>
+  </div>
+</section>
+
+</main>
+
+<footer class="px-5 sm:px-8 py-10 border-t border-char2">
+  <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3 font-mono-tech text-[11px] text-txt3">
+    <span>AHMED / SECURITY — Cybersecurity Portfolio</span>
+    <span>Built for authorized learning, labs &amp; research.</span>
+  </div>
+</footer>
+
+<!-- ================= PROJECT MODAL ================= -->
+<div id="projectModal" class="fixed inset-0 z-[70] hidden">
+  <div id="modalOverlay" class="absolute inset-0 bg-bg1/85 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-start sm:items-center justify-center p-4 sm:p-8 overflow-y-auto">
+    <div class="relative w-full max-w-2xl bg-bg2 border border-char2 glow-border my-8">
+      <button id="modalClose" class="absolute top-4 right-4 text-txt3 hover:text-green font-mono-tech text-xs border border-char3 px-2 py-1" aria-label="Close">ESC ✕</button>
+      <div id="modalBody" class="p-6 sm:p-9 font-mono-tech text-sm text-txt2 space-y-5"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= COMMAND PALETTE ================= -->
+<div id="palette" class="fixed inset-0 z-[80] hidden">
+  <div id="paletteOverlay" class="absolute inset-0 bg-bg1/85 backdrop-blur-sm"></div>
+  <div class="absolute inset-0 flex items-start justify-center pt-24 sm:pt-32 px-4">
+    <div class="w-full max-w-lg bg-bg2 border border-green/30 glow-border">
+      <div class="flex items-center gap-2 px-4 py-3 border-b border-char2 font-mono-tech text-xs text-txt3">
+        <span class="text-green">&gt;</span>
+        <input id="paletteInput" type="text" placeholder="SECURITY COMMAND CENTER — type to search…" class="bg-transparent flex-1 outline-none text-txt1 placeholder-txt3" />
+        <span class="hidden sm:inline">ESC</span>
+      </div>
+      <ul id="paletteList" class="max-h-80 overflow-y-auto font-mono-tech text-sm"></ul>
+    </div>
+  </div>
+</div>
+
+<!-- ================= TERMINAL ================= -->
+<button id="btnTerminal" class="fixed bottom-5 right-5 z-40 w-12 h-12 border border-char3 bg-bg2 text-green hover:border-green/60 transition-colors flex items-center justify-center font-mono-tech" aria-label="Open terminal">&gt;_</button>
+
+<div id="terminalPanel" class="terminal-panel fixed bottom-20 right-5 z-40 w-[92vw] max-w-md h-96 bg-bg1 border border-green/30 glow-border translate-y-4 opacity-0 pointer-events-none flex flex-col">
+  <div class="flex items-center justify-between px-3 py-2 border-b border-char2 font-mono-tech text-[11px] text-txt3">
+    <span>ahmed@security:~$ <span class="text-green">easter-egg</span></span>
+    <button id="terminalClose" class="hover:text-green" aria-label="Close terminal">✕</button>
+  </div>
+  <div id="terminalOutput" class="flex-1 overflow-y-auto px-3 py-2 font-mono-tech text-xs text-txt2 space-y-1"></div>
+  <div class="flex items-center gap-2 px-3 py-2 border-t border-char2">
+    <span class="text-green font-mono-tech text-xs">$</span>
+    <input id="terminalInput" type="text" autocomplete="off" spellcheck="false" class="flex-1 bg-transparent outline-none font-mono-tech text-xs text-txt1" placeholder="type 'help'" />
+  </div>
+</div>
+
+<!-- ================= CONTENT EDITOR (no-code) ================= -->
+<button id="btnEditor" class="fixed bottom-5 left-5 z-40 h-12 px-4 border border-char3 bg-bg2 text-green hover:border-green/60 transition-colors flex items-center gap-2 font-mono-tech text-xs" aria-label="Open content editor">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+  EDIT CONTENT
+</button>
+
+<div id="editorPanel" class="fixed inset-0 z-[90] hidden">
+  <div id="editorOverlay" class="absolute inset-0 bg-bg1/85 backdrop-blur-sm"></div>
+  <div class="absolute inset-y-0 right-0 w-full sm:max-w-xl bg-bg1 border-l border-green/30 flex flex-col">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-char2">
+      <div>
+        <p class="font-mono-tech text-[10px] text-green tracking-wide">NO-CODE EDITOR</p>
+        <h2 class="text-lg font-semibold text-txt1">Edit Portfolio Content</h2>
+      </div>
+      <button id="editorClose" class="text-txt3 hover:text-green font-mono-tech text-xs border border-char3 px-2 py-1" aria-label="Close editor">ESC ✕</button>
+    </div>
+
+    <div class="flex overflow-x-auto border-b border-char2 font-mono-tech text-[11px] shrink-0" id="editorTabs">
+      <button data-tab="profile" class="editorTabBtn px-4 py-3 text-green border-b-2 border-green whitespace-nowrap">PROFILE</button>
+      <button data-tab="certs" class="editorTabBtn px-4 py-3 text-txt3 border-b-2 border-transparent whitespace-nowrap">CERTIFICATIONS</button>
+      <button data-tab="projects" class="editorTabBtn px-4 py-3 text-txt3 border-b-2 border-transparent whitespace-nowrap">PROJECTS</button>
+      <button data-tab="arsenal" class="editorTabBtn px-4 py-3 text-txt3 border-b-2 border-transparent whitespace-nowrap">ARSENAL</button>
+      <button data-tab="writeups" class="editorTabBtn px-4 py-3 text-txt3 border-b-2 border-transparent whitespace-nowrap">WRITE-UPS</button>
+      <button data-tab="timeline" class="editorTabBtn px-4 py-3 text-txt3 border-b-2 border-transparent whitespace-nowrap">JOURNEY</button>
+    </div>
+
+    <div class="flex-1 overflow-y-auto p-5 space-y-5">
+      <div id="tab-profile" class="editorTab space-y-4"></div>
+      <div id="tab-certs" class="editorTab hidden space-y-3"></div>
+      <div id="tab-projects" class="editorTab hidden space-y-3"></div>
+      <div id="tab-arsenal" class="editorTab hidden space-y-3"></div>
+      <div id="tab-writeups" class="editorTab hidden space-y-3"></div>
+      <div id="tab-timeline" class="editorTab hidden space-y-3"></div>
+    </div>
+
+    <div class="border-t border-char2 p-4 flex flex-wrap items-center gap-2 shrink-0 hidden">
+      <p id="editorStatus" class="font-mono-tech text-[11px] text-txt3 w-full"></p>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   DATA — edit here. In a full React build these map to:
+   src/data/profile.ts, skills.ts, projects.ts, writeups.ts,
+   certifications.ts, timeline.ts, socials.ts
+   ============================================================ */
+const CONFIG = {
+  githubUsername: "",     // e.g. "ahmedmohamed" — leave empty until ready
+  linkedinUrl: "",        // e.g. "https://linkedin.com/in/..."
+  email: ""                // e.g. "you@example.com"
+};
+
+/* ---- Supabase backend (optional). Fill these in after you create your
+   Supabase project and run schema.sql (see README.md). Until both are
+   filled in, the site simply runs on the built-in DATA below. ---- */
+const SUPABASE_CONFIG = {
+  url: "",      // e.g. "https://xxxxxxxx.supabase.co"
+  anonKey: ""   // the "anon public" API key from Project Settings → API
+};
+
+const DATA = {
+  profile: {
+    name: "Ahmed Abuelmagd",
+    role: "Cybersecurity Student & Security Trainee",
+    university: "Computer Science — Damanhour University",
+    photo_url: "",
+    focus: ["Cybersecurity","Network Security","Web Security","Vulnerability Assessment","Penetration Testing"]
+  },
+
+  methodology: [
+    { n:"01", t:"Reconnaissance", d:"Understand the target and attack surface." },
+    { n:"02", t:"Enumeration", d:"Identify exposed services, technologies and entry points." },
+    { n:"03", t:"Analysis", d:"Understand behavior and potential weaknesses." },
+    { n:"04", t:"Validation", d:"Verify findings in an authorized lab / environment." },
+    { n:"05", t:"Assessment", d:"Understand impact and risk." },
+    { n:"06", t:"Reporting", d:"Document findings and remediation." }
+  ],
+
+  arsenal: [
+    { name:"Nmap", category:"RECONNAISSANCE", state:"PRACTICING", note:"Host discovery and service/version scanning." },
+    { name:"Gobuster", category:"RECONNAISSANCE", state:"LEARNING", note:"Directory and subdomain enumeration." },
+    { name:"DNS Tools", category:"RECONNAISSANCE", state:"FAMILIAR", note:"dig / nslookup for DNS-layer recon." },
+    { name:"Wireshark", category:"NETWORK ANALYSIS", state:"PRACTICING", note:"Packet capture and traffic analysis." },
+    { name:"Nessus", category:"VULNERABILITY ASSESSMENT", state:"LEARNING", note:"Automated vulnerability scanning." },
+    { name:"Burp Suite", category:"WEB SECURITY", state:"PRACTICING", note:"Intercepting proxy for web app testing." },
+    { name:"OWASP Concepts", category:"WEB SECURITY", state:"HANDS-ON", note:"OWASP Top 10 fundamentals." },
+    { name:"Metasploit", category:"OFFENSIVE SECURITY", state:"LEARNING", note:"Exploitation framework, lab use only." },
+    { name:"Linux", category:"SYSTEMS", state:"HANDS-ON", note:"Daily driver for security tooling." },
+    { name:"Windows", category:"SYSTEMS", state:"FAMILIAR", note:"AD and Windows-side security basics." },
+    { name:"Python", category:"AUTOMATION", state:"HANDS-ON", note:"Scripting recon and small utilities." },
+    { name:"Bash", category:"AUTOMATION", state:"HANDS-ON", note:"Shell scripting for repeatable tasks." }
+  ],
+
+  surface: {
+    center: { id:"core", label:"AHMED / SECURITY" },
+    nodes: [
+      { id:"network", label:"NETWORK", angle:-90,
+        concepts:["TCP/IP fundamentals","Routing & switching basics","Firewalls & segmentation"],
+        tools:["Nmap","Wireshark"], labs:["Home lab network scans (DEMO DATA)"] },
+      { id:"web", label:"WEB", angle:-18,
+        concepts:["OWASP Top 10","Authentication & session handling","Input validation"],
+        tools:["Burp Suite"], labs:["Local DVWA-style practice (LAB VISUALIZATION)"] },
+      { id:"systems", label:"SYSTEMS", angle:54,
+        concepts:["Linux hardening basics","Windows/AD fundamentals","File permissions"],
+        tools:["Linux","Windows"], labs:["TryHackMe systems rooms"] },
+      { id:"vuln", label:"VULNERABILITY", angle:126,
+        concepts:["CVE research","Risk scoring (CVSS basics)","Patch management"],
+        tools:["Nessus"], labs:["Simulated scan reports (SIMULATED)"] },
+      { id:"offensive", label:"OFFENSIVE SECURITY", angle:198,
+        concepts:["Authorized exploitation basics","Privilege escalation concepts","Reporting"],
+        tools:["Metasploit"], labs:["TryHackMe offensive rooms"] }
+    ]
+  },
+
+  projects: [
+    { id:"p1", category:"NETWORK SECURITY", name:"ADD PROJECT DATA", objective:"CONTENT WILL BE ADDED", tools:["Nmap","Wireshark"], result:"COMING SOON", date:"—", simulated:true },
+    { id:"p2", category:"WEB SECURITY", name:"ADD PROJECT DATA", objective:"CONTENT WILL BE ADDED", tools:["Burp Suite"], result:"COMING SOON", date:"—", simulated:true },
+    { id:"p3", category:"VULNERABILITY ASSESSMENT", name:"ADD PROJECT DATA", objective:"CONTENT WILL BE ADDED", tools:["Nessus"], result:"COMING SOON", date:"—", simulated:true },
+    { id:"p4", category:"TRYHACKME", name:"ADD PROJECT DATA", objective:"CONTENT WILL BE ADDED", tools:["Linux","Nmap"], result:"COMING SOON", date:"—", simulated:false },
+    { id:"p5", category:"LINUX", name:"ADD PROJECT DATA", objective:"CONTENT WILL BE ADDED", tools:["Bash"], result:"COMING SOON", date:"—", simulated:false },
+    { id:"p6", category:"DEPI TASKS", name:"ADD PROJECT DATA", objective:"CONTENT WILL BE ADDED", tools:["Python"], result:"COMING SOON", date:"—", simulated:false }
+  ],
+
+  writeups: [
+    "TCP 3-Way Handshake","Nmap Reconnaissance","Network Enumeration","Nessus Vulnerability Assessment",
+    "SMB Enumeration","HTTP / HTTPS Fundamentals","Web Security Fundamentals","TryHackMe Labs"
+  ],
+
+  timeline: [
+    "Computer Science","Cybersecurity Fundamentals","Huawei HCCDA-Tech Essentials",
+    "DEPI Cybersecurity Training","ITI Cybersecurity Training","Network Security Practice",
+    "Vulnerability Assessment","Penetration Testing Practice"
+  ],
+
+  certifications: [
+    { org:"IBM SkillsBuild", title:"Cybersecurity Fundamentals" },
+    { org:"Huawei ICT Academy", title:"HCCDA-Tech Essentials" },
+    { org:"DEPI", title:"Cybersecurity Training" },
+    { org:"ITI", title:"Cybersecurity Training" }
+  ],
+
+  netNodes: [
+    { id:"client", label:"CLIENT", x:60, y:70, status:"ANALYZABLE", surface:"Endpoint", category:"CLIENT-SIDE SECURITY" },
+    { id:"web", label:"WEB SERVER", x:240, y:40, status:"ANALYZABLE", surface:"HTTP / HTTPS", category:"WEB SECURITY" },
+    { id:"server", label:"SERVER", x:420, y:70, status:"ANALYZABLE", surface:"OS / Services", category:"SYSTEMS" },
+    { id:"db", label:"DATABASE", x:420, y:220, status:"ANALYZABLE", surface:"SQL / Data Layer", category:"DATA SECURITY" },
+    { id:"network", label:"NETWORK", x:240, y:190, status:"ANALYZABLE", surface:"TCP/IP", category:"NETWORK SECURITY" },
+    { id:"endpoint", label:"ENDPOINT", x:60, y:230, status:"ANALYZABLE", surface:"Host-based", category:"ENDPOINT SECURITY" }
+  ],
+  netLinks: [["client","web"],["web","network"],["network","server"],["network","db"],["client","endpoint"],["endpoint","network"]]
+};
+
+/* ---- Supabase client + data loading ---- */
+const SUPABASE_READY = !!(SUPABASE_CONFIG.url && SUPABASE_CONFIG.anonKey);
+const sb = SUPABASE_READY ? window.supabase.createClient(SUPABASE_CONFIG.url, SUPABASE_CONFIG.anonKey) : null;
+
+async function loadFromSupabase(){
+  if(!SUPABASE_READY) return false;
+  try{
+    const [profileRes, certRes, projRes, arsRes, wuRes, tlRes] = await Promise.all([
+      sb.from('profile').select('*').eq('id', 1).maybeSingle(),
+      sb.from('certifications').select('*').order('sort_order', { ascending:true }),
+      sb.from('projects').select('*').order('sort_order', { ascending:true }),
+      sb.from('arsenal').select('*').order('sort_order', { ascending:true }),
+      sb.from('writeups').select('*').order('sort_order', { ascending:true }),
+      sb.from('timeline').select('*').order('sort_order', { ascending:true })
+    ]);
+    if(profileRes.data){
+      DATA.profile.name = profileRes.data.name || DATA.profile.name;
+      DATA.profile.role = profileRes.data.role || DATA.profile.role;
+      DATA.profile.university = profileRes.data.university || DATA.profile.university;
+      DATA.profile.photo_url = profileRes.data.photo_url || "";
+      CONFIG.githubUsername = profileRes.data.github_username || "";
+      CONFIG.linkedinUrl = profileRes.data.linkedin_url || "";
+      CONFIG.email = profileRes.data.email || "";
+    }
+    if(certRes.data && certRes.data.length) DATA.certifications = certRes.data.map(c=>({ org:c.org, title:c.title, image_url:c.image_url||'' }));
+    if(projRes.data && projRes.data.length) DATA.projects = projRes.data.map(p=>({ id:p.id, category:p.category, name:p.name, objective:p.objective, tools:p.tools||[], result:p.result, date:p.date, simulated:!!p.simulated, evidence:p.evidence||[] }));
+    if(arsRes.data && arsRes.data.length) DATA.arsenal = arsRes.data.map(a=>({ name:a.name, category:a.category, state:a.state, note:a.note }));
+    if(wuRes.data && wuRes.data.length) DATA.writeups = wuRes.data.map(w=>w.title);
+    if(tlRes.data && tlRes.data.length) DATA.timeline = tlRes.data.map(t=>t.label);
+    return true;
+  }catch(err){
+    console.error('Supabase load failed, falling back to built-in data:', err);
+    return false;
+  }
+}
+</script>
+
+<script>
+/* ============================================================
+   RENDER + INTERACTION LOGIC
+   ============================================================ */
+(async function(){
+  "use strict";
+
+  await loadFromSupabase();
+  document.getElementById('heroName').textContent = DATA.profile.name.toUpperCase();
+  document.getElementById('heroRole').textContent = DATA.profile.role.toUpperCase();
+  document.getElementById('profIdentity').textContent = DATA.profile.name;
+  document.getElementById('profEducation').textContent = DATA.profile.university;
+  document.getElementById('heroAvatarInitial').textContent = (DATA.profile.name.trim()[0] || 'A').toUpperCase();
+  if(DATA.profile.photo_url){
+    const img = document.getElementById('heroAvatarImg');
+    img.src = DATA.profile.photo_url;
+    img.classList.remove('hidden');
+    document.getElementById('heroAvatarInitial').classList.add('hidden');
+  }
+
+  /* ---------- Boot sequence ---------- */
+  const bootLines = [
+    "[OK] CORE SYSTEM",
+    "[OK] NETWORK MODULE",
+    "[OK] WEB SECURITY MODULE",
+    "[OK] VULNERABILITY ENGINE",
+    "[OK] RESEARCH MODULE"
+  ];
+  const bootOverlay = document.getElementById('bootOverlay');
+  const bootLinesEl = document.getElementById('bootLines');
+  const bootEnter = document.getElementById('bootEnter');
+  const btnEnter = document.getElementById('btnEnter');
+  const btnSkip = document.getElementById('btnSkip');
+
+  function closeBoot(){
+    bootOverlay.style.opacity = '0';
+    setTimeout(()=>{ bootOverlay.style.display='none'; }, 500);
+    try{ sessionStorage.setItem('bootSeen','1'); }catch(e){}
+    document.body.style.overflow = '';
+  }
+
+  let alreadySeen = false;
+  try{ alreadySeen = sessionStorage.getItem('bootSeen') === '1'; }catch(e){}
+
+  if(alreadySeen){
+    bootOverlay.style.display = 'none';
+  } else {
+    document.body.style.overflow = 'hidden';
+    let i = 0;
+    const iv = setInterval(()=>{
+      if(i >= bootLines.length){ clearInterval(iv); bootEnter.classList.remove('hidden'); bootEnter.classList.add('flex'); return; }
+      const li = document.createElement('li');
+      li.textContent = bootLines[i];
+      li.className = 'text-txt2';
+      bootLinesEl.appendChild(li);
+      i++;
+    }, 260);
+    // hard cap ~2.4s total experience before allowing skip-through is already available
+    setTimeout(()=>{ if(!bootEnter.classList.contains('flex')){ clearInterval(iv); bootEnter.classList.remove('hidden'); bootEnter.classList.add('flex'); } }, 1600);
+  }
+  btnEnter && btnEnter.addEventListener('click', closeBoot);
+  btnSkip && btnSkip.addEventListener('click', closeBoot);
+
+  /* ---------- Nav scroll compact + mobile menu ---------- */
+  const nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', ()=>{
+    if(window.scrollY > 24){ nav.classList.add('shadow-[0_8px_30px_-20px_rgba(0,255,136,0.35)]'); }
+    else{ nav.classList.remove('shadow-[0_8px_30px_-20px_rgba(0,255,136,0.35)]'); }
+  }, { passive:true });
+
+  const btnMenu = document.getElementById('btnMenu');
+  const mobileMenu = document.getElementById('mobileMenu');
+  btnMenu.addEventListener('click', ()=>{
+    const open = mobileMenu.classList.toggle('hidden');
+    btnMenu.setAttribute('aria-expanded', String(!open));
+  });
+  mobileMenu.querySelectorAll('.mobile-link').forEach(a=>a.addEventListener('click', ()=>mobileMenu.classList.add('hidden')));
+
+  /* ---------- Scroll reveal ---------- */
+  const revealEls = document.querySelectorAll('.fade-up');
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(en=>{ if(en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); } });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el=>io.observe(el));
+
+  /* ---------- Hero network viz ---------- */
+  (function(){
+    const linesG = document.getElementById('netLines');
+    const nodesG = document.getElementById('netNodes');
+    const info = document.getElementById('nodeInfo');
+    const byId = {};
+    DATA.netNodes.forEach(n=>byId[n.id]=n);
+
+    DATA.netLinks.forEach(([a,b])=>{
+      const na = byId[a], nb = byId[b];
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1', na.x); line.setAttribute('y1', na.y);
+      line.setAttribute('x2', nb.x); line.setAttribute('y2', nb.y);
+      line.setAttribute('class','link-line');
+      linesG.appendChild(line);
+    });
+
+    DATA.netNodes.forEach(n=>{
+      const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+      g.setAttribute('transform', `translate(${n.x},${n.y})`);
+      g.style.cursor = 'pointer';
+      g.innerHTML = `
+        <circle r="16" fill="#0C0F0F" stroke="#00FF88" stroke-width="1.2" class="node-pulse"></circle>
+        <circle r="4" fill="#00FF88"></circle>
+        <text y="30" text-anchor="middle" fill="#A7B0B0" font-size="9">${n.label}</text>
+      `;
+      g.addEventListener('mouseenter', ()=>showNode(n));
+      g.addEventListener('focus', ()=>showNode(n));
+      g.addEventListener('click', ()=>showNode(n));
+      g.setAttribute('tabindex','0');
+      nodesG.appendChild(g);
+    });
+
+    function showNode(n){
+      info.innerHTML = `
+        <div class="grid grid-cols-2 gap-2">
+          <div><span class="text-txt3">NODE</span><br><span class="text-txt1">${n.label}</span></div>
+          <div><span class="text-txt3">STATUS</span><br><span class="text-green">${n.status}</span></div>
+          <div><span class="text-txt3">SURFACE</span><br><span class="text-txt1">${n.surface}</span></div>
+          <div><span class="text-txt3">CATEGORY</span><br><span class="text-txt1">${n.category}</span></div>
+        </div>`;
+    }
+
+    // scanline animation
+    const scan = document.getElementById('netScan');
+    let dir = 1, pos = 0;
+    function animScan(){
+      pos += dir * 0.6;
+      if(pos > 100 || pos < 0) dir *= -1;
+      scan.style.top = pos + '%';
+      requestAnimationFrame(animScan);
+    }
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) requestAnimationFrame(animScan);
+  })();
+
+  /* ---------- Attack surface map ---------- */
+  (function(){
+    const linesG = document.getElementById('surfaceLines');
+    const nodesG = document.getElementById('surfaceNodes');
+    const detail = document.getElementById('surfaceDetail');
+    const cx = 300, cy = 210, r = 150;
+
+    // center
+    const centerG = document.createElementNS('http://www.w3.org/2000/svg','g');
+    centerG.setAttribute('transform', `translate(${cx},${cy})`);
+    centerG.innerHTML = `
+      <circle r="46" fill="#0C0F0F" stroke="#00FF88" stroke-width="1.4"></circle>
+      <text text-anchor="middle" dy="-2" fill="#F5F7F7" font-size="10" font-weight="600">AHMED</text>
+      <text text-anchor="middle" dy="12" fill="#A7B0B0" font-size="9">SECURITY</text>
+    `;
+    nodesG.appendChild(centerG);
+
+    DATA.surface.nodes.forEach(n=>{
+      const rad = n.angle * Math.PI/180;
+      const x = cx + r*Math.cos(rad), y = cy + r*Math.sin(rad);
+
+      const line = document.createElementNS('http://www.w3.org/2000/svg','line');
+      line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+      line.setAttribute('x2', x); line.setAttribute('y2', y);
+      linesG.appendChild(line);
+
+      const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+      g.setAttribute('transform', `translate(${x},${y})`);
+      g.style.cursor = 'pointer';
+      g.setAttribute('tabindex','0');
+      g.dataset.id = n.id;
+      g.innerHTML = `
+        <circle r="38" fill="#0C0F0F" stroke="#202525" stroke-width="1.2" class="surfaceCircle"></circle>
+        <text text-anchor="middle" dy="4" fill="#F5F7F7" font-size="9.5">${n.label.split(' ').join(' ')}</text>
+      `;
+      function activate(){
+        document.querySelectorAll('#surfaceNodes .surfaceCircle').forEach(c=>c.setAttribute('stroke','#202525'));
+        g.querySelector('.surfaceCircle').setAttribute('stroke','#00FF88');
+        detail.innerHTML = `
+          <p class="text-green text-xs tracking-wide mb-4">${n.label}</p>
+          <p class="text-txt3 text-[11px] mb-1">CONCEPTS</p>
+          <ul class="mb-4 space-y-1">${n.concepts.map(c=>`<li class="text-txt2">— ${c}</li>`).join('')}</ul>
+          <p class="text-txt3 text-[11px] mb-1">TOOLS</p>
+          <p class="mb-4 text-txt2">${n.tools.join(', ')}</p>
+          <p class="text-txt3 text-[11px] mb-1">LABS / LEARNING</p>
+          <ul class="space-y-1">${n.labs.map(l=>`<li class="text-txt2">— ${l}</li>`).join('')}</ul>
+        `;
+      }
+      g.addEventListener('click', activate);
+      g.addEventListener('focus', activate);
+      nodesG.appendChild(g);
+    });
+  })();
+
+  /* ---------- Arsenal grid ---------- */
+  (function(){
+    const grid = document.getElementById('arsenalGrid');
+    const stateColor = { "LEARNING":"text-cyan","PRACTICING":"text-green","HANDS-ON":"text-green-bright","FAMILIAR":"text-txt2" };
+    grid.innerHTML = DATA.arsenal.map(t=>`
+      <div class="card p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div>
+            <p class="font-mono-tech text-[10px] text-txt3 tracking-wide">${t.category}</p>
+            <h3 class="text-base font-semibold text-txt1 mt-1">${t.name}</h3>
+          </div>
+          <span class="font-mono-tech text-[10px] px-2 py-1 border border-char3 ${stateColor[t.state]||'text-txt2'} whitespace-nowrap">${t.state}</span>
+        </div>
+        <p class="text-sm text-txt2 leading-relaxed">${t.note}</p>
+      </div>
+    `).join('');
+  })();
+
+  /* ---------- Methodology ---------- */
+  (function(){
+    const list = document.getElementById('methodList');
+    list.innerHTML = DATA.methodology.map((m,idx)=>`
+      <li class="flex gap-6 py-6 ${idx!==DATA.methodology.length-1?'border-b border-char2':''}">
+        <span class="font-mono-tech text-2xl text-green/70 w-12 shrink-0">${m.n}</span>
+        <div>
+          <h3 class="text-lg font-semibold text-txt1">${m.t}</h3>
+          <p class="text-txt2 mt-1 leading-relaxed">${m.d}</p>
+        </div>
+      </li>
+    `).join('');
+  })();
+
+  /* ---------- Projects ---------- */
+  (function(){
+    const grid = document.getElementById('projectsGrid');
+    const filtersEl = document.getElementById('projectFilters');
+    const cats = ["ALL", ...new Set(DATA.projects.map(p=>p.category))];
+    let active = "ALL";
+
+    function renderFilters(){
+      filtersEl.innerHTML = cats.map(c=>`
+        <button data-cat="${c}" class="filterBtn px-3 py-1.5 border ${c===active?'border-green text-green':'border-char3 text-txt3'} hover:border-green/60 transition-colors">${c}</button>
+      `).join('');
+      filtersEl.querySelectorAll('.filterBtn').forEach(b=>b.addEventListener('click', ()=>{ active=b.dataset.cat; renderFilters(); renderGrid(); }));
+    }
+
+    function renderGrid(){
+      const items = active==="ALL" ? DATA.projects : DATA.projects.filter(p=>p.category===active);
+      grid.innerHTML = items.map(p=>`
+        <button data-id="${p.id}" class="projectCard card text-left p-5 flex flex-col gap-3">
+          <div class="flex items-center justify-between">
+            <span class="font-mono-tech text-[10px] text-green tracking-wide">${p.category}</span>
+            ${p.simulated? '<span class="font-mono-tech text-[9px] text-cyan border border-cyan/40 px-1.5 py-0.5">SIMULATED</span>' : ''}
+          </div>
+          <h3 class="font-semibold text-txt1">${p.name}</h3>
+          <p class="text-sm text-txt3">${p.objective}</p>
+          <div class="flex flex-wrap gap-1.5 mt-1">
+            ${p.tools.map(t=>`<span class="font-mono-tech text-[9px] border border-char3 text-txt2 px-1.5 py-0.5">${t}</span>`).join('')}
+          </div>
+          <span class="font-mono-tech text-[10px] text-txt3 mt-2">OPEN CASE STUDY →</span>
+        </button>
+      `).join('');
+      grid.querySelectorAll('.projectCard').forEach(el=>el.addEventListener('click', ()=>openProject(el.dataset.id)));
+    }
+
+    renderFilters(); renderGrid();
+
+    window.openProject = function(id){
+      const p = DATA.projects.find(x=>x.id===id);
+      const body = document.getElementById('modalBody');
+      body.innerHTML = `
+        <div>
+          <p class="text-green text-xs tracking-wide">${p.category}</p>
+          <h3 class="text-xl font-semibold text-txt1 mt-1">${p.name}</h3>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4 text-xs">
+          <div><p class="text-txt3 mb-1">OBJECTIVE</p><p class="text-txt2">${p.objective}</p></div>
+          <div><p class="text-txt3 mb-1">TOOLS</p><p class="text-txt2">${p.tools.join(', ')}</p></div>
+          <div><p class="text-txt3 mb-1">RESULT</p><p class="text-txt2">${p.result}</p></div>
+          <div><p class="text-txt3 mb-1">DATE</p><p class="text-txt2">${p.date}</p></div>
+        </div>
+        ${p.simulated ? `
+        <div class="border border-cyan/30 bg-bg1 p-4">
+          <p class="text-cyan text-[10px] tracking-wide mb-2">LAB VISUALIZATION — SIMULATED / DEMO DATA — NOT REAL FINDINGS</p>
+          <pre class="whitespace-pre-wrap text-[11px] text-txt2 leading-relaxed">$ nmap -sV -sC 10.10.10.0/24 (demo)
+Starting scan...
+22/tcp   open  ssh
+80/tcp   open  http
+443/tcp  open  https
+3306/tcp closed mysql
+
+Service detection complete — this output is illustrative only.</pre>
+        </div>` : ''}
+        <div class="border-t border-char2 pt-4">
+          <p class="text-txt3 mb-1">ENVIRONMENT / SCOPE / RECON / ENUMERATION / ANALYSIS / FINDINGS / VALIDATION / RECOMMENDATIONS / LESSONS LEARNED</p>
+          <p class="text-txt2">CONTENT WILL BE ADDED — this case-study structure is ready to receive real write-ups and evidence.</p>
+        </div>
+        ${(p.evidence && p.evidence.length) ? `
+        <div>
+          <p class="text-txt3 text-[11px] mb-2">EVIDENCE</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2">
+            ${p.evidence.map(url=>`<img src="${url}" alt="${p.name} evidence" class="w-full aspect-video object-cover border border-char3" loading="lazy" />`).join('')}
+          </div>
+        </div>` : `<div class="border border-char3 border-dashed p-4 text-center text-txt3 text-xs">EVIDENCE GALLERY — SCREENSHOTS &amp; TERMINAL OUTPUT — ADD YOUR DATA HERE</div>`}
+      `;
+      document.getElementById('projectModal').classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+    };
+  })();
+
+  document.getElementById('modalClose').addEventListener('click', closeModal);
+  document.getElementById('modalOverlay').addEventListener('click', closeModal);
+  function closeModal(){ document.getElementById('projectModal').classList.add('hidden'); document.body.style.overflow=''; }
+
+  /* ---------- Write-ups ---------- */
+  (function(){
+    const list = document.getElementById('writeupsList');
+    list.innerHTML = DATA.writeups.map(w=>`
+      <div class="flex items-center justify-between py-4 gap-4">
+        <span class="text-txt1">${w}</span>
+        <span class="font-mono-tech text-[10px] text-txt3 border border-char3 px-2.5 py-1 whitespace-nowrap">COMING SOON</span>
+      </div>
+    `).join('');
+  })();
+
+  /* ---------- Timeline ---------- */
+  (function(){
+    const list = document.getElementById('journeyList');
+    list.innerHTML = DATA.timeline.map(t=>`
+      <li class="relative pl-7 pb-8 last:pb-0">
+        <span class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full bg-green"></span>
+        <p class="text-txt1 font-medium">${t}</p>
+      </li>
+    `).join('');
+  })();
+
+  /* ---------- Certifications ---------- */
+  (function(){
+    const grid = document.getElementById('certGrid');
+    grid.innerHTML = DATA.certifications.map((c,i)=>`
+      <div class="card p-5">
+        <button class="certToggle w-full text-left flex items-center justify-between gap-3" data-idx="${i}">
+          <div>
+            <p class="font-mono-tech text-[10px] text-txt3 tracking-wide">${c.org}</p>
+            <h3 class="text-base font-semibold text-txt1 mt-1">${c.title}</h3>
+          </div>
+          <span class="text-green font-mono-tech text-lg certChevron">+</span>
+        </button>
+        <div class="certBody hidden mt-4 pt-4 border-t border-char2 font-mono-tech text-xs text-txt3">
+          ${c.image_url ? `<img src="${c.image_url}" alt="${c.title} certificate" class="w-full border border-char3" loading="lazy" />` : 'Certificate image will be added here.'}
+        </div>
+      </div>
+    `).join('');
+    grid.querySelectorAll('.certToggle').forEach(btn=>btn.addEventListener('click', ()=>{
+      const body = btn.parentElement.querySelector('.certBody');
+      const chev = btn.querySelector('.certChevron');
+      body.classList.toggle('hidden');
+      chev.textContent = body.classList.contains('hidden') ? '+' : '–';
+    }));
+  })();
+
+  /* ---------- GitHub panel ---------- */
+  (function(){
+    const panel = document.getElementById('githubPanel');
+    if(CONFIG.githubUsername){
+      panel.innerHTML = `
+        <p class="text-txt3 text-[11px] mb-2">GITHUB</p>
+        <a href="https://github.com/${CONFIG.githubUsername}" target="_blank" rel="noopener" class="text-green hover:underline">github.com/${CONFIG.githubUsername} →</a>
+        <p class="text-txt3 text-xs mt-4">Repository list connects automatically once configured — no fabricated stats are shown.</p>
+      `;
+    } else {
+      panel.innerHTML = `
+        <p class="text-txt3">GITHUB — NOT CONFIGURED</p>
+        <p class="text-txt3 text-xs mt-2">Set <span class="text-txt2">CONFIG.githubUsername</span> in the script to enable this section.</p>
+      `;
+    }
+  })();
+
+  /* ---------- Contact + socials ---------- */
+  (function(){
+    const form = document.getElementById('contactForm');
+    const note = document.getElementById('contactNote');
+    form.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      if(!CONFIG.email){
+        note.textContent = 'Contact email not configured yet — set CONFIG.email to enable sending.';
+        note.className = 'font-mono-tech text-[11px] text-cyan';
+        return;
+      }
+      const name = document.getElementById('cName').value;
+      const email = document.getElementById('cEmail').value;
+      const msg = document.getElementById('cMsg').value;
+      const subject = encodeURIComponent(`Portfolio contact from ${name}`);
+      const body = encodeURIComponent(`${msg}\n\nFrom: ${name} (${email})`);
+      window.location.href = `mailto:${CONFIG.email}?subject=${subject}&body=${body}`;
+      note.textContent = 'Opening your email client…';
+      note.className = 'font-mono-tech text-[11px] text-green';
+    });
+
+    const row = document.getElementById('socialRow');
+    const items = [
+      { label:'GITHUB', url: CONFIG.githubUsername ? `https://github.com/${CONFIG.githubUsername}` : '' },
+      { label:'LINKEDIN', url: CONFIG.linkedinUrl },
+      { label:'EMAIL', url: CONFIG.email ? `mailto:${CONFIG.email}` : '' }
+    ];
+    row.innerHTML = items.map(it=>{
+      if(it.url) return `<a href="${it.url}" target="_blank" rel="noopener" class="border border-char3 px-3 py-2 text-txt1 hover:border-green/60 hover:text-green transition-colors">${it.label}</a>`;
+      return `<span class="border border-char3 px-3 py-2 text-txt3 cursor-not-allowed" title="Not configured yet">${it.label} — NOT CONFIGURED</span>`;
+    }).join('');
+  })();
+
+  /* ---------- Command palette ---------- */
+  (function(){
+    const palette = document.getElementById('palette');
+    const overlay = document.getElementById('paletteOverlay');
+    const input = document.getElementById('paletteInput');
+    const listEl = document.getElementById('paletteList');
+    const btn = document.getElementById('btnPalette');
+
+    const commands = [
+      { label:'Navigate Home', href:'#home' },
+      { label:'Security Profile', href:'#profile' },
+      { label:'Attack Surface', href:'#attack-surface' },
+      { label:'Arsenal', href:'#arsenal' },
+      { label:'Methodology', href:'#methodology' },
+      { label:'Projects', href:'#projects' },
+      { label:'Write-ups', href:'#writeups' },
+      { label:'Learning Journey', href:'#timeline' },
+      { label:'Certifications', href:'#certifications' },
+      { label:'Contact', href:'#contact' }
+    ];
+
+    function render(filter){
+      const f = (filter||'').toLowerCase();
+      const items = commands.filter(c=>c.label.toLowerCase().includes(f));
+      listEl.innerHTML = items.map((c,i)=>`
+        <li>
+          <button data-href="${c.href}" class="paletteItem w-full text-left px-4 py-2.5 flex items-center justify-between text-txt2 hover:bg-char1 hover:text-green transition-colors ${i===0?'bg-char1 text-green':''}">
+            <span>${c.label}</span><span class="text-txt3 text-[10px]">↵</span>
+          </button>
+        </li>`).join('') || `<li class="px-4 py-3 text-txt3">No matches</li>`;
+      listEl.querySelectorAll('.paletteItem').forEach(b=>b.addEventListener('click', ()=>{ location.hash=b.dataset.href; closePalette(); }));
+    }
+
+    function openPalette(){ palette.classList.remove('hidden'); input.value=''; render(''); setTimeout(()=>input.focus(),10); document.body.style.overflow='hidden'; }
+    function closePalette(){ palette.classList.add('hidden'); document.body.style.overflow=''; }
+
+    btn.addEventListener('click', openPalette);
+    overlay.addEventListener('click', closePalette);
+    input.addEventListener('input', ()=>render(input.value));
+    input.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter'){ const first = listEl.querySelector('.paletteItem'); if(first){ location.hash=first.dataset.href; closePalette(); } }
+    });
+
+    document.addEventListener('keydown', (e)=>{
+      if((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==='k'){ e.preventDefault(); palette.classList.contains('hidden') ? openPalette() : closePalette(); }
+      if(e.key==='Escape'){ closePalette(); closeModal(); closeTerminal(); }
+    });
+  })();
+
+  /* ---------- Terminal ---------- */
+  (function(){
+    const btnTerminal = document.getElementById('btnTerminal');
+    const panel = document.getElementById('terminalPanel');
+    const output = document.getElementById('terminalOutput');
+    const input = document.getElementById('terminalInput');
+    const closeBtn = document.getElementById('terminalClose');
+
+    function println(text, cls){
+      const p = document.createElement('div');
+      p.className = cls || '';
+      p.textContent = text;
+      output.appendChild(p);
+      output.scrollTop = output.scrollHeight;
+    }
+
+    function openTerminal(){
+      panel.classList.remove('translate-y-4','opacity-0','pointer-events-none');
+      setTimeout(()=>input.focus(), 50);
+      if(!output.dataset.booted){
+        println('Welcome. Type "help" to see available commands.','text-txt3');
+        output.dataset.booted='1';
+      }
+    }
+    window.closeTerminal = function(){ panel.classList.add('translate-y-4','opacity-0','pointer-events-none'); };
+    btnTerminal.addEventListener('click', ()=> panel.classList.contains('pointer-events-none') ? openTerminal() : closeTerminal());
+    closeBtn.addEventListener('click', closeTerminal);
+
+    const commandsHelp = ['help','whoami','about','skills','arsenal','projects','writeups','contact','clear'];
+
+    function run(cmdRaw){
+      const cmd = cmdRaw.trim().toLowerCase();
+      println('$ ' + cmdRaw, 'text-txt1');
+      switch(cmd){
+        case 'help':
+          println('Available commands: ' + commandsHelp.join(', '));
+          break;
+        case 'whoami':
+          println(DATA.profile.name);
+          println('Cybersecurity Student');
+          println('Security Trainee');
+          println('Focused on Offensive Security');
+          break;
+        case 'about':
+          println(`${DATA.profile.role} — ${DATA.profile.university}.`);
+          break;
+        case 'skills':
+        case 'arsenal':
+          DATA.arsenal.forEach(t=>println(`${t.name.padEnd(16)} [${t.state}] — ${t.category}`));
+          break;
+        case 'projects':
+          DATA.projects.forEach(p=>println(`${p.category.padEnd(24)} ${p.name}`));
+          break;
+        case 'writeups':
+          DATA.writeups.forEach(w=>println('- ' + w + ' [COMING SOON]'));
+          break;
+        case 'contact':
+          println(CONFIG.email ? `Email: ${CONFIG.email}` : 'Contact email not configured yet.');
+          break;
+        case 'clear':
+          output.innerHTML=''; break;
+        case '':
+          break;
+        default:
+          println(`command not found: ${cmd} — type "help"`, 'text-cyan');
+      }
+    }
+
+    input.addEventListener('keydown', (e)=>{
+      if(e.key==='Enter'){ run(input.value); input.value=''; }
+    });
+  })();
+
+})();
+</script>
+
+<script>
+/* ============================================================
+   ADMIN EDITOR — backed by Supabase (real database, real auth)
+   ============================================================ */
+(function(){
+  "use strict";
+  const panel = document.getElementById('editorPanel');
+  const overlay = document.getElementById('editorOverlay');
+  const btnOpen = document.getElementById('btnEditor');
+  const btnClose = document.getElementById('editorClose');
+  const tabsNav = document.getElementById('editorTabs');
+  const tabsBody = panel.querySelector('.flex-1.overflow-y-auto');
+  const footer = panel.querySelector('.border-t.border-char2.p-4');
+
+  function setStatus(msg, tone){
+    const status = document.getElementById('editorStatus');
+    if(!status) return;
+    status.textContent = msg || '';
+    status.className = 'font-mono-tech text-[11px] w-full ' + (tone==='error' ? 'text-cyan' : tone==='ok' ? 'text-green' : 'text-txt3');
+  }
+
+  async function open(){
+    panel.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    if(!SUPABASE_READY){
+      renderNotConfigured();
+      return;
+    }
+    const { data: { session } } = await sb.auth.getSession();
+    if(session){ renderDashboard(session); } else { renderLogin(); }
+  }
+  function close(){ panel.classList.add('hidden'); document.body.style.overflow=''; }
+  btnOpen.addEventListener('click', open);
+  btnClose.addEventListener('click', close);
+  overlay.addEventListener('click', close);
+  document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && !panel.classList.contains('hidden')) close(); });
+
+  function renderNotConfigured(){
+    tabsNav.classList.add('hidden');
+    footer.classList.add('hidden');
+    tabsBody.innerHTML = `
+      <div class="font-mono-tech text-sm text-txt2 space-y-3">
+        <p class="text-green">SUPABASE NOT CONFIGURED</p>
+        <p>This editor writes to a real Supabase database, so it needs a project first.</p>
+        <ol class="list-decimal list-inside space-y-1 text-txt3">
+          <li>Create a free project at supabase.com</li>
+          <li>Run <span class="text-txt1">schema.sql</span> (provided) in the SQL editor</li>
+          <li>Create your admin user under Authentication → Users</li>
+          <li>Paste your Project URL and anon key into <span class="text-txt1">SUPABASE_CONFIG</span> near the top of this file</li>
+        </ol>
+        <p class="text-txt3">Full steps are in README.md.</p>
+      </div>`;
+  }
+
+  function renderLogin(){
+    tabsNav.classList.add('hidden');
+    footer.classList.add('hidden');
+    tabsBody.innerHTML = `
+      <form id="loginForm" class="space-y-4 max-w-sm">
+        <p class="font-mono-tech text-xs text-green tracking-wide">ADMIN LOGIN</p>
+        <div>
+          <label class="font-mono-tech text-[11px] text-txt3">EMAIL</label>
+          <input id="loginEmail" type="email" required class="mt-1.5 w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+        </div>
+        <div>
+          <label class="font-mono-tech text-[11px] text-txt3">PASSWORD</label>
+          <input id="loginPassword" type="password" required class="mt-1.5 w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+        </div>
+        <button type="submit" class="px-4 py-2.5 bg-green text-bg1 font-mono-tech text-xs font-semibold hover:bg-green-bright transition-colors">LOG IN</button>
+        <p id="loginStatus" class="font-mono-tech text-[11px] text-txt3"></p>
+        <p class="font-mono-tech text-[10px] text-txt3">Only the admin account you created in Supabase can sign in — public sign-up is disabled.</p>
+      </form>`;
+    document.getElementById('loginForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const email = document.getElementById('loginEmail').value.trim();
+      const password = document.getElementById('loginPassword').value;
+      const ls = document.getElementById('loginStatus');
+      ls.textContent = 'Signing in…'; ls.className = 'font-mono-tech text-[11px] text-txt3';
+      const { data, error } = await sb.auth.signInWithPassword({ email, password });
+      if(error){ ls.textContent = error.message; ls.className = 'font-mono-tech text-[11px] text-cyan'; return; }
+      renderDashboard(data.session);
+    });
+  }
+
+  function renderDashboard(session){
+    tabsNav.classList.remove('hidden');
+    footer.classList.remove('hidden');
+    document.querySelectorAll('.editorTabBtn').forEach((b,i)=>{
+      b.classList.toggle('text-green', i===0); b.classList.toggle('border-green', i===0);
+      b.classList.toggle('text-txt3', i!==0); b.classList.toggle('border-transparent', i!==0);
+    });
+    document.querySelectorAll('.editorTab').forEach((t,i)=> t.classList.toggle('hidden', i!==0));
+
+    buildProfileTab();
+    buildCertsTab(DATA.certifications);
+    buildProjectsTab(DATA.projects);
+    buildListTab('arsenal', DATA.arsenal, [
+      {key:'name', ph:'Tool name'},
+      {key:'category', ph:'Category (e.g. RECONNAISSANCE)'},
+      {key:'state', ph:'State: LEARNING / PRACTICING / HANDS-ON / FAMILIAR'},
+      {key:'note', ph:'Short note'}
+    ]);
+    buildSimpleListTab('writeups', DATA.writeups);
+    buildSimpleListTab('timeline', DATA.timeline);
+
+    footer.innerHTML = `
+      <button id="editorSave" class="px-4 py-2.5 bg-green text-bg1 font-mono-tech text-xs font-semibold hover:bg-green-bright transition-colors">SAVE CHANGES</button>
+      <button id="editorLogout" class="px-4 py-2.5 border border-char3 text-txt3 font-mono-tech text-xs hover:border-cyan/60 hover:text-cyan transition-colors">LOG OUT</button>
+      <p id="editorStatus" class="font-mono-tech text-[11px] text-txt3 w-full"></p>`;
+    document.getElementById('editorSave').addEventListener('click', saveAll);
+    document.getElementById('editorLogout').addEventListener('click', async ()=>{ await sb.auth.signOut(); renderLogin(); });
+  }
+
+  document.querySelectorAll('.editorTabBtn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.editorTabBtn').forEach(b=>{ b.classList.remove('text-green','border-green'); b.classList.add('text-txt3','border-transparent'); });
+      btn.classList.add('text-green','border-green'); btn.classList.remove('text-txt3','border-transparent');
+      document.querySelectorAll('.editorTab').forEach(t=>t.classList.add('hidden'));
+      document.getElementById('tab-'+btn.dataset.tab).classList.remove('hidden');
+    });
+  });
+
+  function field(label, id, value){
+    return `<div>
+      <label class="font-mono-tech text-[11px] text-txt3 tracking-wide">${label}</label>
+      <input id="${id}" type="text" value="${(value||'').toString().replace(/"/g,'&quot;')}" class="mt-1.5 w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+    </div>`;
+  }
+  function buildProfileTab(){
+    document.getElementById('tab-profile').innerHTML = `
+      ${field('NAME','ed_name', DATA.profile.name)}
+      ${field('ROLE','ed_role', DATA.profile.role)}
+      ${field('EDUCATION','ed_university', DATA.profile.university)}
+      ${field('GITHUB USERNAME','ed_github', CONFIG.githubUsername)}
+      ${field('LINKEDIN URL','ed_linkedin', CONFIG.linkedinUrl)}
+      ${field('EMAIL','ed_email', CONFIG.email)}
+      <div>
+        <label class="font-mono-tech text-[11px] text-txt3 tracking-wide">PROFILE PHOTO</label>
+        ${DATA.profile.photo_url ? `<img src="${DATA.profile.photo_url}" class="h-16 w-16 rounded-full object-cover border border-char3 mt-1.5 mb-2" alt="current photo" />` : ''}
+        <input id="ed_photo" type="file" accept="image/*" class="block w-full text-xs text-txt2" />
+      </div>
+      <p class="font-mono-tech text-[10px] text-txt3">Leave GitHub / LinkedIn / Email empty to keep those sections showing "NOT CONFIGURED".</p>`;
+  }
+
+  async function uploadFile(bucket, file){
+    const safeName = file.name.replace(/[^a-zA-Z0-9.\-_]/g,'_');
+    const path = `${Date.now()}-${Math.random().toString(36).slice(2,8)}-${safeName}`;
+    const { error } = await sb.storage.from(bucket).upload(path, file, { upsert:false });
+    if(error) throw error;
+    const { data } = sb.storage.from(bucket).getPublicUrl(path);
+    return data.publicUrl;
+  }
+
+  function buildCertsTab(items){
+    const container = document.getElementById('tab-certs');
+    container.innerHTML = `<div id="rows-certs" class="space-y-3"></div>
+      <button type="button" class="addRowBtn px-3 py-2 border border-char3 text-txt2 font-mono-tech text-[11px] hover:border-green/60 hover:text-green transition-colors">+ ADD ENTRY</button>`;
+    const rows = document.getElementById('rows-certs');
+    function addRow(item){
+      item = item || {};
+      const row = document.createElement('div');
+      row.className = 'border border-char2 p-3 space-y-2 relative';
+      row.dataset.existingImage = item.image_url || '';
+      row.innerHTML = `
+        <input data-key="org" type="text" placeholder="Organization (e.g. IBM SkillsBuild)" value="${(item.org||'').replace(/"/g,'&quot;')}" class="w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+        <input data-key="title" type="text" placeholder="Course / Title" value="${(item.title||'').replace(/"/g,'&quot;')}" class="w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+        ${item.image_url ? `<img src="${item.image_url}" class="h-16 border border-char3" alt="current certificate" />` : ''}
+        <label class="block font-mono-tech text-[10px] text-txt3">${item.image_url ? 'Replace certificate image:' : 'Upload certificate image (optional):'}
+          <input data-key="imageFile" type="file" accept="image/*" class="block mt-1 w-full text-xs text-txt2" />
+        </label>
+        <button type="button" class="removeRowBtn absolute top-2 right-2 text-txt3 hover:text-cyan font-mono-tech text-xs" aria-label="Remove entry">✕</button>`;
+      row.querySelector('.removeRowBtn').addEventListener('click', ()=>row.remove());
+      rows.appendChild(row);
+    }
+    items.forEach(addRow);
+    container.querySelector('.addRowBtn').addEventListener('click', ()=>addRow());
+    container._collectAsync = async function(){
+      const out = [];
+      for(const row of Array.from(rows.children)){
+        const org = row.querySelector('[data-key="org"]').value.trim();
+        const title = row.querySelector('[data-key="title"]').value.trim();
+        if(!org && !title) continue;
+        const fileInput = row.querySelector('[data-key="imageFile"]');
+        let image_url = row.dataset.existingImage || '';
+        if(fileInput.files && fileInput.files[0]){
+          image_url = await uploadFile('certificates', fileInput.files[0]);
+        }
+        out.push({ org, title, image_url });
+      }
+      return out;
+    };
+  }
+
+  function buildProjectsTab(items){
+    const container = document.getElementById('tab-projects');
+    container.innerHTML = `<div id="rows-projects" class="space-y-3"></div>
+      <button type="button" class="addRowBtn px-3 py-2 border border-char3 text-txt2 font-mono-tech text-[11px] hover:border-green/60 hover:text-green transition-colors">+ ADD ENTRY</button>`;
+    const rows = document.getElementById('rows-projects');
+    function addRow(item){
+      item = item || {};
+      const toolsStr = (item.tools||[]).join(', ');
+      const evidence = item.evidence || [];
+      const row = document.createElement('div');
+      row.className = 'border border-char2 p-3 space-y-2 relative';
+      row.dataset.existingEvidence = JSON.stringify(evidence);
+      row.innerHTML = `
+        <input data-key="category" type="text" placeholder="Category (e.g. WEB SECURITY)" value="${(item.category||'').replace(/"/g,'&quot;')}" class="w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+        <input data-key="name" type="text" placeholder="Project name" value="${(item.name||'').replace(/"/g,'&quot;')}" class="w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+        <input data-key="objective" type="text" placeholder="Objective" value="${(item.objective||'').replace(/"/g,'&quot;')}" class="w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+        <input data-key="toolsStr" type="text" placeholder="Tools (comma separated)" value="${toolsStr.replace(/"/g,'&quot;')}" class="w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+        <input data-key="result" type="text" placeholder="Result" value="${(item.result||'COMING SOON').replace(/"/g,'&quot;')}" class="w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+        <input data-key="date" type="text" placeholder="Date" value="${(item.date||'').replace(/"/g,'&quot;')}" class="w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+        <label class="flex items-center gap-2 font-mono-tech text-[11px] text-txt3"><input data-key="simulated" type="checkbox" ${item.simulated?'checked':''} class="accent-[#00FF88]" /> Mark visuals as SIMULATED / DEMO DATA</label>
+        ${evidence.length ? `<div class="flex gap-1.5 flex-wrap">${evidence.map(u=>`<img src="${u}" class="h-12 w-16 object-cover border border-char3" alt="evidence" />`).join('')}</div>` : ''}
+        <label class="block font-mono-tech text-[10px] text-txt3">Add evidence screenshots (optional, multiple):
+          <input data-key="evidenceFiles" type="file" accept="image/*" multiple class="block mt-1 w-full text-xs text-txt2" />
+        </label>
+        ${evidence.length ? `<label class="flex items-center gap-2 font-mono-tech text-[10px] text-txt3"><input data-key="clearEvidence" type="checkbox" /> Remove existing evidence images</label>` : ''}
+        <button type="button" class="removeRowBtn absolute top-2 right-2 text-txt3 hover:text-cyan font-mono-tech text-xs" aria-label="Remove entry">✕</button>`;
+      row.querySelector('.removeRowBtn').addEventListener('click', ()=>row.remove());
+      rows.appendChild(row);
+    }
+    items.forEach(addRow);
+    container.querySelector('.addRowBtn').addEventListener('click', ()=>addRow());
+    container._collectAsync = async function(){
+      const out = [];
+      for(const row of Array.from(rows.children)){
+        const category = row.querySelector('[data-key="category"]').value.trim();
+        const name = row.querySelector('[data-key="name"]').value.trim();
+        if(!category && !name) continue;
+        const objective = row.querySelector('[data-key="objective"]').value.trim();
+        const toolsStr = row.querySelector('[data-key="toolsStr"]').value.trim();
+        const result = row.querySelector('[data-key="result"]').value.trim();
+        const date = row.querySelector('[data-key="date"]').value.trim();
+        const simulated = row.querySelector('[data-key="simulated"]').checked;
+        const clearBox = row.querySelector('[data-key="clearEvidence"]');
+        let evidence = clearBox && clearBox.checked ? [] : JSON.parse(row.dataset.existingEvidence || '[]');
+        const filesInput = row.querySelector('[data-key="evidenceFiles"]');
+        if(filesInput.files && filesInput.files.length){
+          for(const f of Array.from(filesInput.files)){
+            evidence.push(await uploadFile('evidence', f));
+          }
+        }
+        out.push({
+          category, name, objective,
+          tools: toolsStr.split(',').map(s=>s.trim()).filter(Boolean),
+          result, date, simulated, evidence
+        });
+      }
+      return out;
+    };
+  }
+
+  function buildListTab(tabKey, items, fields, hasSimulatedToggle){
+    const container = document.getElementById('tab-'+tabKey);
+    container.innerHTML = `<div id="rows-${tabKey}" class="space-y-3"></div>
+      <button type="button" class="addRowBtn px-3 py-2 border border-char3 text-txt2 font-mono-tech text-[11px] hover:border-green/60 hover:text-green transition-colors">+ ADD ENTRY</button>`;
+    const rows = document.getElementById('rows-'+tabKey);
+    function addRow(item){
+      item = item || {};
+      const row = document.createElement('div');
+      row.className = 'border border-char2 p-3 space-y-2 relative';
+      row.innerHTML = fields.map(f=>`<input data-key="${f.key}" type="text" placeholder="${f.ph}" value="${(item[f.key]||'').toString().replace(/"/g,'&quot;')}" class="w-full border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />`).join('')
+        + (hasSimulatedToggle ? `<label class="flex items-center gap-2 font-mono-tech text-[11px] text-txt3"><input data-key="simulated" type="checkbox" ${item.simulated?'checked':''} class="accent-[#00FF88]" /> Mark visuals as SIMULATED / DEMO DATA</label>` : '')
+        + `<button type="button" class="removeRowBtn absolute top-2 right-2 text-txt3 hover:text-cyan font-mono-tech text-xs" aria-label="Remove entry">✕</button>`;
+      row.querySelector('.removeRowBtn').addEventListener('click', ()=>row.remove());
+      rows.appendChild(row);
+    }
+    items.forEach(addRow);
+    container.querySelector('.addRowBtn').addEventListener('click', ()=>addRow());
+    container._collect = function(){
+      return Array.from(rows.children).map(row=>{
+        const obj = {};
+        fields.forEach(f=>{ obj[f.key] = row.querySelector(`[data-key="${f.key}"]`).value.trim(); });
+        if(hasSimulatedToggle){
+          obj.tools = obj.toolsStr.split(',').map(s=>s.trim()).filter(Boolean);
+          delete obj.toolsStr;
+          obj.simulated = row.querySelector('[data-key="simulated"]').checked;
+        }
+        return obj;
+      }).filter(o => Object.values(o).some(v => Array.isArray(v) ? v.length : v));
+    };
+  }
+
+  function buildSimpleListTab(tabKey, items){
+    const container = document.getElementById('tab-'+tabKey);
+    container.innerHTML = `<div id="rows-${tabKey}" class="space-y-2"></div>
+      <button type="button" class="addRowBtn px-3 py-2 border border-char3 text-txt2 font-mono-tech text-[11px] hover:border-green/60 hover:text-green transition-colors">+ ADD ENTRY</button>`;
+    const rows = document.getElementById('rows-'+tabKey);
+    function addRow(value){
+      const row = document.createElement('div');
+      row.className = 'flex items-center gap-2';
+      row.innerHTML = `<input type="text" value="${(value||'').toString().replace(/"/g,'&quot;')}" class="flex-1 border border-char3 bg-bg2 px-3 py-2 text-sm text-txt1 focus:border-green/60 outline-none" />
+        <button type="button" class="removeRowBtn text-txt3 hover:text-cyan font-mono-tech text-xs" aria-label="Remove entry">✕</button>`;
+      row.querySelector('.removeRowBtn').addEventListener('click', ()=>row.remove());
+      rows.appendChild(row);
+    }
+    items.forEach(addRow);
+    container.querySelector('.addRowBtn').addEventListener('click', ()=>addRow(''));
+    container._collect = function(){
+      return Array.from(rows.children).map(row=>row.querySelector('input').value.trim()).filter(Boolean);
+    };
+  }
+
+  /* ---- sync a full list table: wipe it, then insert the current rows ---- */
+  async function syncTable(table, rows){
+    const del = await sb.from(table).delete().not('id','is', null);
+    if(del.error) throw del.error;
+    if(!rows.length) return;
+    const withOrder = rows.map((r,i)=>({ ...r, sort_order:i }));
+    const ins = await sb.from(table).insert(withOrder);
+    if(ins.error) throw ins.error;
+  }
+
+  async function saveAll(){
+    setStatus('Saving…');
+    try{
+      const photoInput = document.getElementById('ed_photo');
+      let photo_url = DATA.profile.photo_url || '';
+      if(photoInput.files && photoInput.files[0]){
+        photo_url = await uploadFile('profile', photoInput.files[0]);
+      }
+      const profile = {
+        id: 1,
+        name: document.getElementById('ed_name').value.trim() || DATA.profile.name,
+        role: document.getElementById('ed_role').value.trim() || DATA.profile.role,
+        university: document.getElementById('ed_university').value.trim() || DATA.profile.university,
+        github_username: document.getElementById('ed_github').value.trim(),
+        linkedin_url: document.getElementById('ed_linkedin').value.trim(),
+        email: document.getElementById('ed_email').value.trim(),
+        photo_url: photo_url
+      };
+      const profRes = await sb.from('profile').upsert(profile);
+      if(profRes.error) throw profRes.error;
+
+      setStatus('Uploading files & saving…');
+      await syncTable('certifications', await document.getElementById('tab-certs')._collectAsync());
+      await syncTable('projects', await document.getElementById('tab-projects')._collectAsync());
+      await syncTable('arsenal', document.getElementById('tab-arsenal')._collect());
+      await syncTable('writeups', document.getElementById('tab-writeups')._collect().map(title=>({ title })));
+      await syncTable('timeline', document.getElementById('tab-timeline')._collect().map(label=>({ label })));
+
+      setStatus('Saved to Supabase. Reloading…', 'ok');
+      setTimeout(()=>location.reload(), 700);
+    }catch(err){
+      console.error(err);
+      setStatus('Save failed: ' + (err.message || 'check console / RLS policies'), 'error');
+    }
+  }
+})();
+</script>
+
+</body>
+</html>
