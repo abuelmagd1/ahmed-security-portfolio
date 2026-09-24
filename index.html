@@ -454,8 +454,11 @@
    certifications.ts, timeline.ts, socials.ts
    ============================================================ */
 const CONFIG = {
-  githubUsername: "",     // e.g. "ahmedmohamed" — leave empty until ready
-  linkedinUrl: "",        // e.g. "https://linkedin.com/in/..."
+  githubUsername: "abuelmagd1",
+  linkedinUrl: "https://www.linkedin.com/in/ahmed-abu-elmagd",
+  whatsappUrl: "https://wa.me/201094997330",
+  facebookUrl: "https://www.facebook.com/ahmed.abu.elmagd.645743",
+  instagramUrl: "https://www.instagram.com/abu___elmagd",
   email: ""                // e.g. "you@example.com"
 };
 
@@ -856,6 +859,9 @@ const DATA = {
     const items = [
       { label:'GITHUB', url: CONFIG.githubUsername ? `https://github.com/${CONFIG.githubUsername}` : '' },
       { label:'LINKEDIN', url: CONFIG.linkedinUrl },
+      { label:'WHATSAPP', url: CONFIG.whatsappUrl },
+      { label:'FACEBOOK', url: CONFIG.facebookUrl },
+      { label:'INSTAGRAM', url: CONFIG.instagramUrl },
       { label:'EMAIL', url: CONFIG.email ? `mailto:${CONFIG.email}` : '' }
     ];
     row.innerHTML = items.map(it=>{
