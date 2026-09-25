@@ -307,12 +307,20 @@
 <!-- ================= ARSENAL ================= -->
 <section id="arsenal" class="px-5 sm:px-8 py-20 border-t border-char2">
   <div class="max-w-7xl mx-auto">
-    <div class="fade-up mb-10">
+    <div class="fade-up mb-8">
       <p class="font-mono-tech text-xs text-green tracking-[0.2em] mb-2">03 // TOOLING</p>
       <h2 class="text-3xl sm:text-4xl font-bold">Security Arsenal</h2>
-      <p class="text-txt2 mt-2 max-w-xl">Tools organized by purpose, with an honest label for where I currently stand with each.</p>
+      <p class="text-txt2 mt-2 max-w-xl">Tools and technologies I've actually worked with, organized by purpose — with an honest label for where I stand with each.</p>
     </div>
+    <div id="arsenalTabs" class="fade-up flex flex-wrap gap-2 font-mono-tech text-[11px] mb-6"></div>
+    <div id="arsenalFoundation" class="fade-up mb-6 hidden"></div>
     <div id="arsenalGrid" class="fade-up grid sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    <p id="arsenalNote" class="fade-up font-mono-tech text-[11px] text-txt3 mt-5 hidden"></p>
+
+    <div class="fade-up mt-14 border-t border-char2 pt-8">
+      <p class="font-mono-tech text-[11px] text-green tracking-wide mb-4">SECURITY WORKFLOW</p>
+      <div id="arsenalWorkflow" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3"></div>
+    </div>
   </div>
 </section>
 
@@ -480,20 +488,69 @@ const DATA = {
     { n:"06", t:"Reporting", d:"Communicate findings and practical remediation recommendations." }
   ],
 
-  arsenal: [
-    { name:"Nmap", category:"NETWORK SECURITY", state:"PRACTICING", note:"Host discovery and service/version scanning." },
-    { name:"Wireshark", category:"NETWORK SECURITY", state:"PRACTICING", note:"Packet capture and traffic analysis." },
-    { name:"Netcat", category:"NETWORK SECURITY", state:"LEARNING", note:"Basic connections, banner grabbing, transfers." },
-    { name:"Burp Suite", category:"WEB SECURITY", state:"PRACTICING", note:"Intercepting proxy for web app testing." },
-    { name:"Gobuster", category:"WEB SECURITY", state:"LEARNING", note:"Directory and endpoint enumeration." },
-    { name:"ffuf", category:"WEB SECURITY", state:"LEARNING", note:"Fast web fuzzing for hidden content." },
-    { name:"Nessus", category:"VULNERABILITY ASSESSMENT", state:"LEARNING", note:"Automated vulnerability scanning." },
-    { name:"Metasploit", category:"VULNERABILITY ASSESSMENT", state:"LEARNING", note:"Validating known weaknesses in lab environments." },
-    { name:"ADB", category:"MOBILE SECURITY", state:"LEARNING", note:"Android debugging and basic app analysis." },
-    { name:"Linux CLI", category:"SYSTEMS", state:"HANDS-ON", note:"Daily driver for security tooling." },
-    { name:"Python", category:"SYSTEMS", state:"PRACTICING", note:"Basic automation for recon and small utilities." },
-    { name:"Bash", category:"SYSTEMS", state:"HANDS-ON", note:"Shell scripting for repeatable tasks." }
-  ],
+  arsenal: {
+    categories: [
+      { key:"recon", label:"RECON", tools:[
+        { name:"Nmap", subtitle:"Reconnaissance & Enumeration", status:"HANDS-ON", uses:["Host discovery","Port scanning","Service enumeration","Service/version detection","Network reconnaissance"] },
+        { name:"fping", subtitle:"Host Discovery", status:"HANDS-ON", uses:["Host discovery","Network range scanning","Identifying active hosts"] },
+        { name:"Gobuster", subtitle:"Web Reconnaissance", status:"PRACTICING", uses:["Directory enumeration","Web reconnaissance","Content discovery"] },
+        { name:"ffuf", subtitle:"Web Fuzzing", status:"PRACTICING", uses:["Web fuzzing","Endpoint discovery","Content discovery"] }
+      ]},
+      { key:"web", label:"WEB", tools:[
+        { name:"Burp Suite", subtitle:"Web Application Testing", status:"HANDS-ON", uses:["HTTP request/response analysis","Intercepting traffic","Repeater & request manipulation","Web security labs"] },
+        { name:"HTTP / HTTPS", subtitle:"Security Foundation", status:"HANDS-ON", uses:["Requests, responses & methods","Headers, status codes & cookies","Sessions","HTTPS/TLS fundamentals"] }
+      ]},
+      { key:"network", label:"NETWORK", tools:[
+        { name:"Wireshark", subtitle:"Traffic & Protocol Analysis", status:"HANDS-ON", uses:["Packet analysis","Traffic inspection","Protocol analysis","Network troubleshooting"] },
+        { name:"Netcat", subtitle:"Network Testing", status:"PRACTICING", uses:["Network connections","Port/service testing","Basic troubleshooting","Security lab exercises"] }
+      ], foundation:{ title:"Networking Foundation", status:"FOUNDATIONAL / HANDS-ON",
+        items:["TCP/IP","OSI Model","TCP","UDP","IP Addressing","Ports","DNS","ARP","DHCP","NAT","PAT","VLAN","STP","SMB","SNMP","SMTP","Network Enumeration","Service Enumeration"] } },
+      { key:"vuln", label:"VULN", tools:[
+        { name:"Nessus", subtitle:"Vulnerability Assessment", status:"HANDS-ON", uses:["Vulnerability scanning","Vulnerability identification","Security assessment","Risk analysis"] },
+        { name:"Metasploit Framework", subtitle:"Security Labs", status:"PRACTICING", uses:["Security lab exercises","Exploitation fundamentals","Payload concepts","Controlled vulnerability validation"] }
+      ], note:"Nmap is also used for vulnerability-related scanning — see the Recon category." },
+      { key:"mobile", label:"MOBILE", tools:[
+        { name:"ADB (Android Debug Bridge)", subtitle:"Mobile Security", status:"PRACTICING", uses:["Android device/application interaction","Application testing","Debugging","Security lab exercises"] }
+      ], note:"Android security tooling more broadly — still learning and practicing alongside ADB." },
+      { key:"systems", label:"SYSTEMS", tools:[
+        { name:"Kali Linux", subtitle:"Security Testing Environment", status:"HANDS-ON", uses:["Primary security testing environment"] },
+        { name:"Linux", subtitle:"Operating System", status:"HANDS-ON", uses:["CLI, file system & permissions","Processes & networking commands","Shell usage","Security tooling"] },
+        { name:"Windows", subtitle:"Security Labs", status:"FOUNDATIONAL", uses:["Windows security labs","Network/service analysis","IIS testing","RDP/service assessment"] },
+        { name:"VMware", subtitle:"Virtualization", status:"HANDS-ON", uses:["Virtual security labs","Kali Linux & Windows environments","Isolated practice environments"] }
+      ]},
+      { key:"dev", label:"DEV", tools:[
+        { name:"Python", subtitle:"Automation & Scripting", status:"PRACTICING", uses:["Basic automation","Scripting","Security tooling concepts"] },
+        { name:"Bash", subtitle:"Automation", status:"PRACTICING", uses:["Linux automation","Command-line workflows","Security lab tasks"] },
+        { name:"Git", subtitle:"Version Control", status:"HANDS-ON", uses:["Version control","Project management","Code collaboration"] },
+        { name:"GitHub", subtitle:"Project Hosting", status:"HANDS-ON", uses:["Code repositories","Project hosting","Technical work"] },
+        { name:"JavaScript", subtitle:"Web Development", status:"FOUNDATIONAL", uses:["Frontend logic","Interactive web features"] },
+        { name:"Vite", subtitle:"Build Tooling", status:"HANDS-ON", uses:["Frontend project builds"] },
+        { name:"Node.js / npm", subtitle:"Runtime & Packages", status:"FOUNDATIONAL", uses:["Package management","Running local tooling"] },
+        { name:"Flutter", subtitle:"Mobile Development", status:"HANDS-ON", uses:["Cross-platform app development"] },
+        { name:"Dart", subtitle:"Mobile Development", status:"HANDS-ON", uses:["Flutter application logic"] },
+        { name:"Android Studio", subtitle:"Mobile Development", status:"HANDS-ON", uses:["Android app development & debugging"] },
+        { name:"Android SDK", subtitle:"Mobile Development", status:"PRACTICING", uses:["Android build & testing tools"] },
+        { name:"Supabase", subtitle:"Backend & Database", status:"HANDS-ON", uses:["Backend services","Authentication","Database integration"] },
+        { name:"PostgreSQL", subtitle:"Database", status:"FOUNDATIONAL", uses:["Relational database fundamentals"] },
+        { name:"SQLite", subtitle:"Database", status:"FOUNDATIONAL", uses:["Lightweight local databases"] },
+        { name:"REST APIs", subtitle:"Integration", status:"HANDS-ON", uses:["API integration","Requests/responses","Authentication","Data exchange"] },
+        { name:"Vercel", subtitle:"Deployment", status:"HANDS-ON", uses:["Web deployment","Project hosting"] },
+        { name:"Application Testing", subtitle:"QA", status:"HANDS-ON", uses:["Functional testing of applications"] },
+        { name:"Debugging", subtitle:"QA", status:"HANDS-ON", uses:["Diagnosing and fixing issues"] },
+        { name:"Technical Documentation", subtitle:"Reporting", status:"HANDS-ON", uses:["Security findings","Technical reports","Project & testing documentation"] }
+      ]}
+    ],
+    workflow: [
+      { stage:"RECON", tools:["Nmap","fping"] },
+      { stage:"ENUMERATION", tools:["Nmap","Gobuster","ffuf"] },
+      { stage:"NETWORK ANALYSIS", tools:["Wireshark","Netcat"] },
+      { stage:"WEB TESTING", tools:["Burp Suite","Gobuster","ffuf"] },
+      { stage:"VULNERABILITY ASSESSMENT", tools:["Nessus","Nmap"] },
+      { stage:"SECURITY LABS", tools:["Metasploit","Kali Linux"] },
+      { stage:"MOBILE", tools:["ADB"] },
+      { stage:"AUTOMATION", tools:["Python","Bash"] }
+    ]
+  },
 
   surface: {
     center: { id:"core", label:"AHMED / SECURITY" },
@@ -739,20 +796,73 @@ const DATA = {
     });
   })();
 
-  /* ---------- Arsenal grid ---------- */
+  /* ---------- Arsenal (tabbed) ---------- */
   (function(){
+    const tabsEl = document.getElementById('arsenalTabs');
     const grid = document.getElementById('arsenalGrid');
-    const stateColor = { "LEARNING":"text-cyan","PRACTICING":"text-green","HANDS-ON":"text-green-bright","FAMILIAR":"text-txt2" };
-    grid.innerHTML = DATA.arsenal.map(t=>`
-      <div class="card p-5">
-        <div class="flex items-start justify-between gap-3 mb-3">
-          <div>
-            <p class="font-mono-tech text-[10px] text-txt3 tracking-wide">${t.category}</p>
-            <h3 class="text-base font-semibold text-txt1 mt-1">${t.name}</h3>
+    const foundationEl = document.getElementById('arsenalFoundation');
+    const noteEl = document.getElementById('arsenalNote');
+    const workflowEl = document.getElementById('arsenalWorkflow');
+    const stateColor = { "LEARNING":"text-cyan","PRACTICING":"text-green","HANDS-ON":"text-green-bright","FOUNDATIONAL":"text-txt2" };
+    const cats = DATA.arsenal.categories;
+    let active = cats[0].key;
+
+    function renderTabs(){
+      tabsEl.innerHTML = cats.map(c=>`
+        <button data-key="${c.key}" class="tabBtn px-3 py-1.5 border ${c.key===active?'border-green text-green':'border-char3 text-txt3'} hover:border-green/60 transition-colors">${c.label}</button>
+      `).join('');
+      tabsEl.querySelectorAll('.tabBtn').forEach(b=>b.addEventListener('click', ()=>{ active=b.dataset.key; renderTabs(); renderGrid(); }));
+    }
+
+    function renderGrid(){
+      const cat = cats.find(c=>c.key===active);
+
+      if(cat.foundation){
+        foundationEl.classList.remove('hidden');
+        foundationEl.innerHTML = `
+          <div class="border border-char2 bg-bg2/60 p-5">
+            <div class="flex items-center justify-between gap-3 mb-3">
+              <p class="font-semibold text-txt1">${cat.foundation.title}</p>
+              <span class="font-mono-tech text-[10px] px-2 py-1 border border-char3 text-txt2 whitespace-nowrap">${cat.foundation.status}</span>
+            </div>
+            <div class="flex flex-wrap gap-1.5">
+              ${cat.foundation.items.map(i=>`<span class="font-mono-tech text-[10px] border border-char3 text-txt2 px-2 py-1">${i}</span>`).join('')}
+            </div>
+          </div>`;
+      } else {
+        foundationEl.classList.add('hidden');
+        foundationEl.innerHTML = '';
+      }
+
+      grid.innerHTML = cat.tools.map(t=>`
+        <div class="card p-5">
+          <div class="flex items-start justify-between gap-3 mb-3">
+            <div>
+              <p class="font-mono-tech text-[10px] text-txt3 tracking-wide">${t.subtitle}</p>
+              <h3 class="text-base font-semibold text-txt1 mt-1">${t.name}</h3>
+            </div>
+            <span class="font-mono-tech text-[10px] px-2 py-1 border border-char3 ${stateColor[t.status]||'text-txt2'} whitespace-nowrap">${t.status}</span>
           </div>
-          <span class="font-mono-tech text-[10px] px-2 py-1 border border-char3 ${stateColor[t.state]||'text-txt2'} whitespace-nowrap">${t.state}</span>
+          <ul class="space-y-1">
+            ${t.uses.map(u=>`<li class="text-sm text-txt2 leading-relaxed">— ${u}</li>`).join('')}
+          </ul>
         </div>
-        <p class="text-sm text-txt2 leading-relaxed">${t.note}</p>
+      `).join('');
+
+      if(cat.note){
+        noteEl.textContent = cat.note;
+        noteEl.classList.remove('hidden');
+      } else {
+        noteEl.classList.add('hidden');
+      }
+    }
+
+    renderTabs(); renderGrid();
+
+    workflowEl.innerHTML = DATA.arsenal.workflow.map(w=>`
+      <div class="border border-char2 bg-bg2/50 p-4">
+        <p class="font-mono-tech text-[10px] text-green tracking-wide mb-2">${w.stage}</p>
+        <p class="text-sm text-txt2">${w.tools.join(' · ')}</p>
       </div>
     `).join('');
   })();
@@ -970,7 +1080,10 @@ const DATA = {
           break;
         case 'skills':
         case 'arsenal':
-          DATA.arsenal.forEach(t=>println(`${t.name.padEnd(16)} [${t.state}] — ${t.category}`));
+          DATA.arsenal.categories.forEach(cat=>{
+            println(cat.label + ':');
+            cat.tools.forEach(t=>println(`  ${t.name.padEnd(24)} [${t.status}]`));
+          });
           break;
         case 'learning':
           DATA.journey.forEach(s=>{ println(s.stage.toUpperCase() + ':'); s.items.forEach(i=>println('  ' + i)); });
