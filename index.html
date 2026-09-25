@@ -969,18 +969,62 @@ const DATA = {
   /* ---------- GitHub panel ---------- */
   (function(){
     const panel = document.getElementById('githubPanel');
-    if(CONFIG.githubUsername){
-      panel.innerHTML = `
-        <p class="text-txt3 text-[11px] mb-2">GITHUB</p>
-        <a href="https://github.com/${CONFIG.githubUsername}" target="_blank" rel="noopener" class="text-green hover:underline">github.com/${CONFIG.githubUsername} →</a>
-        <p class="text-txt3 text-xs mt-4">Repository list connects automatically once configured — no fabricated stats are shown.</p>
-      `;
-    } else {
+    if(!CONFIG.githubUsername){
       panel.innerHTML = `
         <p class="text-txt3">GITHUB — NOT CONFIGURED</p>
         <p class="text-txt3 text-xs mt-2">Set <span class="text-txt2">CONFIG.githubUsername</span> in the script to enable this section.</p>
       `;
+      return;
     }
+
+    panel.innerHTML = `
+      <div class="flex items-center justify-between flex-wrap gap-2 mb-6">
+        <div>
+          <p class="text-txt3 text-[11px] mb-2">GITHUB</p>
+          <a href="https://github.com/${CONFIG.githubUsername}" target="_blank" rel="noopener" class="text-green hover:underline">github.com/${CONFIG.githubUsername} →</a>
+        </div>
+        <p class="text-txt3 text-[11px]">Live data from the GitHub API — nothing fabricated.</p>
+      </div>
+      <div id="githubRepos" class="grid sm:grid-cols-2 gap-4">
+        <p class="text-txt3 text-xs">Loading repositories…</p>
+      </div>
+    `;
+
+    const reposEl = document.getElementById('githubRepos');
+
+    fetch(`https://api.github.com/users/${CONFIG.githubUsername}/repos?sort=updated&per_page=100`)
+      .then(res => {
+        if(!res.ok) throw new Error('GitHub API error: ' + res.status);
+        return res.json();
+      })
+      .then(repos => {
+        const visible = repos
+          .filter(r => !r.fork)
+          .sort((a,b) => new Date(b.pushed_at) - new Date(a.pushed_at))
+          .slice(0, 6);
+
+        if(!visible.length){
+          reposEl.innerHTML = `<p class="text-txt3 text-xs">No public repositories yet.</p>`;
+          return;
+        }
+
+        reposEl.innerHTML = visible.map(r => `
+          <a href="${r.html_url}" target="_blank" rel="noopener" class="card p-4 block">
+            <div class="flex items-center justify-between gap-2 mb-2">
+              <h3 class="text-sm font-semibold text-txt1 truncate">${r.name}</h3>
+              <span class="font-mono-tech text-[10px] text-txt3 whitespace-nowrap">★ ${r.stargazers_count}</span>
+            </div>
+            <p class="text-xs text-txt2 leading-relaxed mb-3">${r.description ? r.description : 'No description provided.'}</p>
+            <div class="flex items-center gap-2 font-mono-tech text-[10px] text-txt3">
+              ${r.language ? `<span class="border border-char3 px-1.5 py-0.5">${r.language}</span>` : ''}
+              <span>Updated ${new Date(r.pushed_at).toLocaleDateString()}</span>
+            </div>
+          </a>
+        `).join('');
+      })
+      .catch(() => {
+        reposEl.innerHTML = `<p class="text-txt3 text-xs">Couldn't load repositories right now — visit the profile link above directly.</p>`;
+      });
   })();
 
   /* ---------- Contact + socials ---------- */
